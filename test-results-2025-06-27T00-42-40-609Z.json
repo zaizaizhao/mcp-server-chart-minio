@@ -1,0 +1,134 @@
+[
+  {
+    "chartType": "line",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-5389529b-1669-4ef3-8c3f-70feb556a4f1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004225Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=cab5af9001d8ea80eecc9fe82acbec707ebb70cdc772aaa2da5642691f82b425",
+    "filename": "chart-5389529b-1669-4ef3-8c3f-70feb556a4f1.png"
+  },
+  {
+    "chartType": "area",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-2e4ae2ed-3d5b-4b82-92f5-34cf2ffb1b89.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d1027f71bbdc10a7f5d9bda23f59248c6b92be2310b68207411cb9a46f5c11d6",
+    "filename": "chart-2e4ae2ed-3d5b-4b82-92f5-34cf2ffb1b89.png"
+  },
+  {
+    "chartType": "column",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-0940f702-c6ea-4960-b686-66b41fb14148.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=ee2b24c8412c6d8806bbd7fea4819dc6014a91d0a3040c636691c9f0650331bd",
+    "filename": "chart-0940f702-c6ea-4960-b686-66b41fb14148.png"
+  },
+  {
+    "chartType": "bar",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-d1ca897f-d067-4c12-9b60-fdb5cffb7d86.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004227Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d520db712a938b11a99fd03085c6f42ece294059299af120f78381a9f00d92df",
+    "filename": "chart-d1ca897f-d067-4c12-9b60-fdb5cffb7d86.png"
+  },
+  {
+    "chartType": "pie",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-2cc6f06c-3b8c-4ccc-bd9f-cd29c8d52499.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004227Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=7c70c2e1f5d299f2457a9c06d43d93019c594ad4a62906c720c622f5e1c679b5",
+    "filename": "chart-2cc6f06c-3b8c-4ccc-bd9f-cd29c8d52499.png"
+  },
+  {
+    "chartType": "scatter",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-eb843dc9-b045-45fa-a0e7-ed2dae33d268.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004228Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9f8ebe55899167c92a8d4e5fc256d905e1c3e4244e63f68e8fcccbfc1fe1799b",
+    "filename": "chart-eb843dc9-b045-45fa-a0e7-ed2dae33d268.png"
+  },
+  {
+    "chartType": "histogram",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-2ced5c34-4b55-4c4c-b02a-3d10ee36bb69.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=4870d27dbd5b038c72397159d868afae89f48b1984fabbae026790e7fca26385",
+    "filename": "chart-2ced5c34-4b55-4c4c-b02a-3d10ee36bb69.png"
+  },
+  {
+    "chartType": "boxplot",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-bb959b11-2417-487e-946f-84d3ed63f78b.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d6d893a29eaa635022752df488e72dbbc03668c4019e2968140ea14aabf706d5",
+    "filename": "chart-bb959b11-2417-487e-946f-84d3ed63f78b.png"
+  },
+  {
+    "chartType": "radar",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-1541495e-971b-4db5-b476-172af881adc1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004230Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9a943eddb8ca1b3f394056895a42cdd6d8193500ed16e8a0d55cabcb5853aa5d",
+    "filename": "chart-1541495e-971b-4db5-b476-172af881adc1.png"
+  },
+  {
+    "chartType": "funnel",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-43dfcfcf-42e0-4504-9a5e-117db87f30f7.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004231Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=842d4090094f9f8d783fbfc49531bfa855723d88a0330be9d464f64f79138758",
+    "filename": "chart-43dfcfcf-42e0-4504-9a5e-117db87f30f7.png"
+  },
+  {
+    "chartType": "treemap",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-6b5dd122-02e8-4e0d-95ca-1441bc0baa09.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004231Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=c005ddfe1867daa8659e67f899d199896f419c6439bb76c080a1ef63c826f14f",
+    "filename": "chart-6b5dd122-02e8-4e0d-95ca-1441bc0baa09.png"
+  },
+  {
+    "chartType": "sankey",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-a3f9deee-520a-4f23-99c2-543fe613570c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004232Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=4271b3575eaa941094c1e417f238af30b9793d516908aa5de60476922f4ecc0b",
+    "filename": "chart-a3f9deee-520a-4f23-99c2-543fe613570c.png"
+  },
+  {
+    "chartType": "word-cloud",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-1dab1fd6-03c0-49b8-b442-f7be70d3a198.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004233Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=3f202aaf6f839b2de2750a82b1157c1ec7fad56147af606d52372d2f7c89382a",
+    "filename": "chart-1dab1fd6-03c0-49b8-b442-f7be70d3a198.png"
+  },
+  {
+    "chartType": "dual-axes",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-64e89cc6-0558-4016-9844-0da56cb1eb8e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004234Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=64669ce49f167db7e989007cb236cdaa4cc8e5c0ce1916575e4df09211b0b5d6",
+    "filename": "chart-64e89cc6-0558-4016-9844-0da56cb1eb8e.png"
+  },
+  {
+    "chartType": "liquid",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-2d47088d-2168-43ef-b4ff-dad29c38ea38.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004234Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6266ef1f6ec3aa8a0840bd371fe1529be5c9139730dcc036ea04b1d2ab20733e",
+    "filename": "chart-2d47088d-2168-43ef-b4ff-dad29c38ea38.png"
+  },
+  {
+    "chartType": "violin",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-81a38613-5993-4bd1-874f-8d9aaed9bc2f.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004235Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=48b41b808055064665715937dfc8dd366be995f2b856a28f5b1f8715399f4c52",
+    "filename": "chart-81a38613-5993-4bd1-874f-8d9aaed9bc2f.png"
+  },
+  {
+    "chartType": "venn",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-cb7cd262-f0f6-412d-93f4-3c20f2ebf7a1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004236Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=3f69e32d805271f8845f285dfd1dfeb7e5ac06afd1c5c697b45f4d999abaca63",
+    "filename": "chart-cb7cd262-f0f6-412d-93f4-3c20f2ebf7a1.png"
+  },
+  {
+    "chartType": "mind-map",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-280301ab-0fa2-4260-9d90-89cb0d88c115.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004237Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=a7bd19a544e4c145fa0065ce0142f2efc2be573889cc2fb00c1f296d896aea1b",
+    "filename": "chart-280301ab-0fa2-4260-9d90-89cb0d88c115.png"
+  },
+  {
+    "chartType": "organization-chart",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-51e85bc9-b8bd-4545-a7b0-87a6444b1746.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004238Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=a5c143ac6652ad80b633b7af980f8b29e7eb0836ee184cca773a63102e8c6498",
+    "filename": "chart-51e85bc9-b8bd-4545-a7b0-87a6444b1746.png"
+  },
+  {
+    "chartType": "flow-diagram",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-7eac1776-0a58-48e4-bd95-deb5df59d665.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004238Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=eb5d4b103f0b065d8341561d77f62b68d819393a97c359a4d92a4fdb8f992c63",
+    "filename": "chart-7eac1776-0a58-48e4-bd95-deb5df59d665.png"
+  },
+  {
+    "chartType": "fishbone-diagram",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-4642d866-5b5e-4537-a05c-316d5b88e78c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004239Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=b01349fe3ebba3b1894b22d76dc006935087b895f7a36d9c9bb536503dfca63f",
+    "filename": "chart-4642d866-5b5e-4537-a05c-316d5b88e78c.png"
+  },
+  {
+    "chartType": "network-graph",
+    "status": "success",
+    "url": "http://localhost:9000/charts/chart-ab557b4b-7091-44ae-983a-9b38aa3252fd.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250627%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250627T004240Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=0d67c3b30889522d980789ff9227b42e04e1e6ae47696a72ec69e00ec610ad8c",
+    "filename": "chart-ab557b4b-7091-44ae-983a-9b38aa3252fd.png"
+  }
+]
