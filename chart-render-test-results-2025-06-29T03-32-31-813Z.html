@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图表渲染测试报告</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .summary-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .summary-card h3 { margin: 0 0 10px 0; font-size: 2em; }
+        .summary-card p { margin: 0; opacity: 0.9; }
+        .results { display: grid; gap: 20px; }
+        .result-item { border: 1px solid #ddd; border-radius: 8px; padding: 20px; }
+        .result-item.success { border-left: 5px solid #27ae60; background-color: #f8fff9; }
+        .result-item.failed { border-left: 5px solid #e74c3c; background-color: #fff8f8; }
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .result-type { font-weight: bold; font-size: 1.2em; color: #2c3e50; }
+        .result-status.success { color: #27ae60; }
+        .result-status.failed { color: #e74c3c; }
+        .result-title { color: #7f8c8d; margin-bottom: 10px; }
+        .result-details { font-size: 0.9em; color: #666; }
+        .chart-preview { margin-top: 15px; }
+        .chart-preview img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; }
+        .error-message { background-color: #fee; padding: 10px; border-radius: 4px; color: #c62828; font-family: monospace; }
+        .timestamp { text-align: center; color: #7f8c8d; margin-top: 30px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 图表渲染测试报告</h1>
+        
+        <div class="summary">
+            <div class="summary-card">
+                <h3>22</h3>
+                <p>总测试数</p>
+            </div>
+            <div class="summary-card">
+                <h3>22</h3>
+                <p>成功</p>
+            </div>
+            <div class="summary-card">
+                <h3>0</h3>
+                <p>失败</p>
+            </div>
+            <div class="summary-card">
+                <h3>18.3s</h3>
+                <p>总耗时</p>
+            </div>
+        </div>
+        
+        <div class="results">
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">column</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">柱状图测试 - 产品销量对比</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 714ms</p>
+                            <p><strong>文件名:</strong> chart-8d4eb663-265d-4b1c-b939-bd07e6ade7ea.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-8d4eb663-265d-4b1c-b939-bd07e6ade7ea.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e3a4378587bd14d1525724599ca0446c4a085c2b8441d47b94a20aaa6bf23de7" target="_blank">http://localhost:9000/charts/chart-8d4eb663-265d-4b1c-b939-bd07e6ade7ea.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e3a4378587bd14d1525724599ca0446c4a085c2b8441d47b94a20aaa6bf23de7</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-8d4eb663-265d-4b1c-b939-bd07e6ade7ea.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e3a4378587bd14d1525724599ca0446c4a085c2b8441d47b94a20aaa6bf23de7" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">line</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">折线图测试 - 年度销售趋势</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 921ms</p>
+                            <p><strong>文件名:</strong> chart-ec3a436d-365a-44e0-b57f-6c75544989dc.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-ec3a436d-365a-44e0-b57f-6c75544989dc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9dd66fb41a5754c79976fec8f5e90d76df9561c75e096f8671162fc66212d02a" target="_blank">http://localhost:9000/charts/chart-ec3a436d-365a-44e0-b57f-6c75544989dc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9dd66fb41a5754c79976fec8f5e90d76df9561c75e096f8671162fc66212d02a</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-ec3a436d-365a-44e0-b57f-6c75544989dc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9dd66fb41a5754c79976fec8f5e90d76df9561c75e096f8671162fc66212d02a" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">area</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">面积图测试 - 月度访问量</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 923ms</p>
+                            <p><strong>文件名:</strong> chart-3268c268-2881-4770-9e24-b09b29e8df12.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-3268c268-2881-4770-9e24-b09b29e8df12.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=141670c98e569b05fe304ec2de3ff2b8e0ef838a5199087ffcadf22f43ecb67d" target="_blank">http://localhost:9000/charts/chart-3268c268-2881-4770-9e24-b09b29e8df12.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=141670c98e569b05fe304ec2de3ff2b8e0ef838a5199087ffcadf22f43ecb67d</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-3268c268-2881-4770-9e24-b09b29e8df12.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033214Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=141670c98e569b05fe304ec2de3ff2b8e0ef838a5199087ffcadf22f43ecb67d" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">bar</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">条形图测试 - 城市销售额</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 341ms</p>
+                            <p><strong>文件名:</strong> chart-0c3871ee-6807-4fd5-81cf-49c001dfa367.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-0c3871ee-6807-4fd5-81cf-49c001dfa367.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=af301a75b334144a2d0219d5d9dfdb5c0b7e2f863027f17b8eef6b3986b8b60f" target="_blank">http://localhost:9000/charts/chart-0c3871ee-6807-4fd5-81cf-49c001dfa367.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=af301a75b334144a2d0219d5d9dfdb5c0b7e2f863027f17b8eef6b3986b8b60f</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-0c3871ee-6807-4fd5-81cf-49c001dfa367.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=af301a75b334144a2d0219d5d9dfdb5c0b7e2f863027f17b8eef6b3986b8b60f" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">pie</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">饼图测试 - 浏览器市场份额</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 351ms</p>
+                            <p><strong>文件名:</strong> chart-215aa5f4-abe1-462a-974d-aa7d7c4a5c08.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-215aa5f4-abe1-462a-974d-aa7d7c4a5c08.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e158ef1d8f97a72eb699e053c4715e74444ed1b1b1b24982a7a05b5ca2df8687" target="_blank">http://localhost:9000/charts/chart-215aa5f4-abe1-462a-974d-aa7d7c4a5c08.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e158ef1d8f97a72eb699e053c4715e74444ed1b1b1b24982a7a05b5ca2df8687</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-215aa5f4-abe1-462a-974d-aa7d7c4a5c08.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e158ef1d8f97a72eb699e053c4715e74444ed1b1b1b24982a7a05b5ca2df8687" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">scatter</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">散点图测试 - 身高体重关系</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 354ms</p>
+                            <p><strong>文件名:</strong> chart-92cf32f9-525c-4215-ab6f-293d55587a4c.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-92cf32f9-525c-4215-ab6f-293d55587a4c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e567e99bc73bc1f29079e44a348b704f4fc61d7779d457bc72593abbd4b2a938" target="_blank">http://localhost:9000/charts/chart-92cf32f9-525c-4215-ab6f-293d55587a4c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e567e99bc73bc1f29079e44a348b704f4fc61d7779d457bc72593abbd4b2a938</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-92cf32f9-525c-4215-ab6f-293d55587a4c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033216Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e567e99bc73bc1f29079e44a348b704f4fc61d7779d457bc72593abbd4b2a938" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">histogram</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">直方图测试 - 数据分布</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 311ms</p>
+                            <p><strong>文件名:</strong> chart-dc766fe0-35cc-4857-9dd0-70e0ba6928fc.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-dc766fe0-35cc-4857-9dd0-70e0ba6928fc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=542bd5464ef51fe099e9a35a7c122a9776fb1c8fec89d303c25c820925393751" target="_blank">http://localhost:9000/charts/chart-dc766fe0-35cc-4857-9dd0-70e0ba6928fc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=542bd5464ef51fe099e9a35a7c122a9776fb1c8fec89d303c25c820925393751</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-dc766fe0-35cc-4857-9dd0-70e0ba6928fc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=542bd5464ef51fe099e9a35a7c122a9776fb1c8fec89d303c25c820925393751" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">boxplot</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">箱线图测试 - 分组数据分布</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 311ms</p>
+                            <p><strong>文件名:</strong> chart-cd54eec9-ed47-40c3-8738-06e400623a48.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-cd54eec9-ed47-40c3-8738-06e400623a48.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=b2f035f45154a980369e5206855fe273eb5f6cce5ffa51dbc4a04628a02babb6" target="_blank">http://localhost:9000/charts/chart-cd54eec9-ed47-40c3-8738-06e400623a48.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=b2f035f45154a980369e5206855fe273eb5f6cce5ffa51dbc4a04628a02babb6</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-cd54eec9-ed47-40c3-8738-06e400623a48.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=b2f035f45154a980369e5206855fe273eb5f6cce5ffa51dbc4a04628a02babb6" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">radar</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">雷达图测试 - 产品综合评价</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 312ms</p>
+                            <p><strong>文件名:</strong> chart-2fe03231-f2c1-423e-9e5d-e5287b252cd0.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-2fe03231-f2c1-423e-9e5d-e5287b252cd0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=db760cce350b61a5bcaadfbd0a4b9da9bad0314df369d783bf712fa0c7d764f4" target="_blank">http://localhost:9000/charts/chart-2fe03231-f2c1-423e-9e5d-e5287b252cd0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=db760cce350b61a5bcaadfbd0a4b9da9bad0314df369d783bf712fa0c7d764f4</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-2fe03231-f2c1-423e-9e5d-e5287b252cd0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033219Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=db760cce350b61a5bcaadfbd0a4b9da9bad0314df369d783bf712fa0c7d764f4" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">treemap</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">树状图测试 - 组织结构</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 277ms</p>
+                            <p><strong>文件名:</strong> chart-5bf81b03-cf40-401c-bb16-437804846453.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-5bf81b03-cf40-401c-bb16-437804846453.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=61802ab154cc38a43ecf06f4f1ac720e9e53888840097fb0dbadc54eabe30dd1" target="_blank">http://localhost:9000/charts/chart-5bf81b03-cf40-401c-bb16-437804846453.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=61802ab154cc38a43ecf06f4f1ac720e9e53888840097fb0dbadc54eabe30dd1</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-5bf81b03-cf40-401c-bb16-437804846453.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=61802ab154cc38a43ecf06f4f1ac720e9e53888840097fb0dbadc54eabe30dd1" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">sankey</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">桑基图测试 - 流量流向</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 277ms</p>
+                            <p><strong>文件名:</strong> chart-f201171f-3177-4e9f-9d63-6bd5c69147f3.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-f201171f-3177-4e9f-9d63-6bd5c69147f3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6d7d078a4521b044c9ccce98d8e1006896785679f3b7f1763900b420a6b9c086" target="_blank">http://localhost:9000/charts/chart-f201171f-3177-4e9f-9d63-6bd5c69147f3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6d7d078a4521b044c9ccce98d8e1006896785679f3b7f1763900b420a6b9c086</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-f201171f-3177-4e9f-9d63-6bd5c69147f3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6d7d078a4521b044c9ccce98d8e1006896785679f3b7f1763900b420a6b9c086" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">funnel</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">漏斗图测试 - 用户转化漏斗</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 461ms</p>
+                            <p><strong>文件名:</strong> chart-7a19a2b0-b83d-4dd4-9b70-9cdc00245c0b.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-7a19a2b0-b83d-4dd4-9b70-9cdc00245c0b.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=b4942a48c147bf5c60958ceb600789b6d6f5aa9be00c4445adf9e5a6ba6f38a4" target="_blank">http://localhost:9000/charts/chart-7a19a2b0-b83d-4dd4-9b70-9cdc00245c0b.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=b4942a48c147bf5c60958ceb600789b6d6f5aa9be00c4445adf9e5a6ba6f38a4</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-7a19a2b0-b83d-4dd4-9b70-9cdc00245c0b.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033221Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=b4942a48c147bf5c60958ceb600789b6d6f5aa9be00c4445adf9e5a6ba6f38a4" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">word-cloud</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">词云图测试 - 技术热度</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 401ms</p>
+                            <p><strong>文件名:</strong> chart-837a44c1-d0ca-445b-b3ae-bafd946e40ac.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-837a44c1-d0ca-445b-b3ae-bafd946e40ac.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=a519f3c6e04f2dc38e5bbf9fa7a8e622f06a0bd247f019497fb62742b2869cf7" target="_blank">http://localhost:9000/charts/chart-837a44c1-d0ca-445b-b3ae-bafd946e40ac.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=a519f3c6e04f2dc38e5bbf9fa7a8e622f06a0bd247f019497fb62742b2869cf7</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-837a44c1-d0ca-445b-b3ae-bafd946e40ac.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=a519f3c6e04f2dc38e5bbf9fa7a8e622f06a0bd247f019497fb62742b2869cf7" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">liquid</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">水波图测试 - 完成进度 65%</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 400ms</p>
+                            <p><strong>文件名:</strong> chart-1f394f1d-5007-4849-961d-f8c7f9caed90.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-1f394f1d-5007-4849-961d-f8c7f9caed90.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=62768159dafadc1633c39091f1ffdcf26cf52a1979a625c9e6a943b5bf9a4d95" target="_blank">http://localhost:9000/charts/chart-1f394f1d-5007-4849-961d-f8c7f9caed90.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=62768159dafadc1633c39091f1ffdcf26cf52a1979a625c9e6a943b5bf9a4d95</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-1f394f1d-5007-4849-961d-f8c7f9caed90.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=62768159dafadc1633c39091f1ffdcf26cf52a1979a625c9e6a943b5bf9a4d95" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">dual-axes</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">双轴图测试 - 销售额与增长率</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 650ms</p>
+                            <p><strong>文件名:</strong> chart-30f9dd6e-8b27-488d-8f2f-b9729007c7bb.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-30f9dd6e-8b27-488d-8f2f-b9729007c7bb.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d06b54e93d45eb9783d73b5eba891ce04b21d475276c635c2373ce30e7eb2458" target="_blank">http://localhost:9000/charts/chart-30f9dd6e-8b27-488d-8f2f-b9729007c7bb.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d06b54e93d45eb9783d73b5eba891ce04b21d475276c635c2373ce30e7eb2458</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-30f9dd6e-8b27-488d-8f2f-b9729007c7bb.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033224Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d06b54e93d45eb9783d73b5eba891ce04b21d475276c635c2373ce30e7eb2458" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">venn</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">韦恩图测试 - 集合关系</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 254ms</p>
+                            <p><strong>文件名:</strong> chart-717837b7-7f91-479c-88d5-115534411380.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-717837b7-7f91-479c-88d5-115534411380.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6ff42e8fb45c4ec76a062d7284d3585ead9de3a4b723ba45dfec26546624ed36" target="_blank">http://localhost:9000/charts/chart-717837b7-7f91-479c-88d5-115534411380.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6ff42e8fb45c4ec76a062d7284d3585ead9de3a4b723ba45dfec26546624ed36</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-717837b7-7f91-479c-88d5-115534411380.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6ff42e8fb45c4ec76a062d7284d3585ead9de3a4b723ba45dfec26546624ed36" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">violin</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">小提琴图测试 - 数据分布密度</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 602ms</p>
+                            <p><strong>文件名:</strong> chart-8bc6ee19-4bff-4860-a417-d373bb76171f.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-8bc6ee19-4bff-4860-a417-d373bb76171f.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=ffd47687efa4bb16c0f886653b36d0ccb016ea96bcf495e3b766178d574c4989" target="_blank">http://localhost:9000/charts/chart-8bc6ee19-4bff-4860-a417-d373bb76171f.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=ffd47687efa4bb16c0f886653b36d0ccb016ea96bcf495e3b766178d574c4989</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-8bc6ee19-4bff-4860-a417-d373bb76171f.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=ffd47687efa4bb16c0f886653b36d0ccb016ea96bcf495e3b766178d574c4989" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">mind-map</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">思维导图测试 - 项目管理流程</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 605ms</p>
+                            <p><strong>文件名:</strong> chart-b4a0fba8-f25a-4405-81bb-e5762cd8d1b4.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-b4a0fba8-f25a-4405-81bb-e5762cd8d1b4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6d500952dfda683ab04cb04af299a48e74ad8b6f7b84a79d736aa54a23964d84" target="_blank">http://localhost:9000/charts/chart-b4a0fba8-f25a-4405-81bb-e5762cd8d1b4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6d500952dfda683ab04cb04af299a48e74ad8b6f7b84a79d736aa54a23964d84</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-b4a0fba8-f25a-4405-81bb-e5762cd8d1b4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033226Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6d500952dfda683ab04cb04af299a48e74ad8b6f7b84a79d736aa54a23964d84" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">flow-diagram</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">流程图测试 - 数据处理流程</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 603ms</p>
+                            <p><strong>文件名:</strong> chart-9577db51-d151-4774-800b-1f4d0e13f94e.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-9577db51-d151-4774-800b-1f4d0e13f94e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=4f4248ac2c60d167609c6ac957252c3c4a5e9a320b0bc22776cd0d3eb66dac59" target="_blank">http://localhost:9000/charts/chart-9577db51-d151-4774-800b-1f4d0e13f94e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=4f4248ac2c60d167609c6ac957252c3c4a5e9a320b0bc22776cd0d3eb66dac59</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-9577db51-d151-4774-800b-1f4d0e13f94e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=4f4248ac2c60d167609c6ac957252c3c4a5e9a320b0bc22776cd0d3eb66dac59" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">fishbone-diagram</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">鱼骨图测试 - 问题根因分析</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 603ms</p>
+                            <p><strong>文件名:</strong> chart-71de8a5f-7e42-4dff-bc42-8c9cf5b98a3c.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-71de8a5f-7e42-4dff-bc42-8c9cf5b98a3c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9a394ae4d1ca554153d95c9ad3a802fc142dcaf6657aa9cc065e970a2e42aa07" target="_blank">http://localhost:9000/charts/chart-71de8a5f-7e42-4dff-bc42-8c9cf5b98a3c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9a394ae4d1ca554153d95c9ad3a802fc142dcaf6657aa9cc065e970a2e42aa07</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-71de8a5f-7e42-4dff-bc42-8c9cf5b98a3c.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9a394ae4d1ca554153d95c9ad3a802fc142dcaf6657aa9cc065e970a2e42aa07" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">organization-chart</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">组织架构图测试 - 公司结构</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 610ms</p>
+                            <p><strong>文件名:</strong> chart-a334ad73-385d-4101-8e26-c6a8ad0960b5.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-a334ad73-385d-4101-8e26-c6a8ad0960b5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=ca44af13e6991906b4d6beb05d103039ced44e6314082da245ca99554bbdda7a" target="_blank">http://localhost:9000/charts/chart-a334ad73-385d-4101-8e26-c6a8ad0960b5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=ca44af13e6991906b4d6beb05d103039ced44e6314082da245ca99554bbdda7a</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-a334ad73-385d-4101-8e26-c6a8ad0960b5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033229Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=ca44af13e6991906b4d6beb05d103039ced44e6314082da245ca99554bbdda7a" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="result-item success">
+                    <div class="result-header">
+                        <span class="result-type">network-graph</span>
+                        <span class="result-status success">
+                            ✅ 成功
+                        </span>
+                    </div>
+                    <div class="result-title">网络图测试 - 社交网络关系</div>
+                    <div class="result-details">
+                        
+                            <p><strong>渲染时间:</strong> 215ms</p>
+                            <p><strong>文件名:</strong> chart-134fca3f-0082-4996-bec0-4155a9d521ec.png</p>
+                            <p><strong>访问URL:</strong> <a href="http://localhost:9000/charts/chart-134fca3f-0082-4996-bec0-4155a9d521ec.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033231Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=5502c2e275da641c54a1f6f98618b508e54c64baaa733491d95acc7da3894bba" target="_blank">http://localhost:9000/charts/chart-134fca3f-0082-4996-bec0-4155a9d521ec.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033231Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=5502c2e275da641c54a1f6f98618b508e54c64baaa733491d95acc7da3894bba</a></p>
+                            <div class="chart-preview">
+                                <img src="http://localhost:9000/charts/chart-134fca3f-0082-4996-bec0-4155a9d521ec.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250629%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250629T033231Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=5502c2e275da641c54a1f6f98618b508e54c64baaa733491d95acc7da3894bba" alt="Chart Preview" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="timestamp">
+            报告生成时间: 2025/6/29 11:32:31
+        </div>
+    </div>
+</body>
+</html>

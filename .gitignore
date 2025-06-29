@@ -2,8 +2,6 @@
 node_modules/
 dist/
 
-# Environment files
-.env
 
 # Logs
 logs/
