@@ -17,7 +17,16 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "docker:build": "docker build -t mcp-server-chart-minio .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env mcp-server-chart-minio",
+    "docker:up": "docker-compose up -d",
+    "docker:up:minio": "docker-compose -f docker-compose.minio.yml up -d",
+    "docker:down": "docker-compose down",
+    "docker:down:minio": "docker-compose -f docker-compose.minio.yml down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:logs:app": "docker-compose logs -f app",
+    "docker:logs:minio": "docker-compose logs -f minio"
   },
   "dependencies": {
     "@antv/gpt-vis-ssr": "^0.1.6",

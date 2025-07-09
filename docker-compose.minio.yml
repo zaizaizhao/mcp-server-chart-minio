@@ -3,7 +3,7 @@ version: '3.8'
 services:
   minio:
     image: minio/minio:latest
-    container_name: mcp-chart-minio
+    container_name: mcp-chart-minio-standalone
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -19,33 +19,11 @@ services:
       timeout: 20s
       retries: 3
     networks:
-      - mcp-network
-
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: mcp-chart-app
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - MINIO_ENDPOINT=minio
-      - MINIO_PORT=9000
-      - MINIO_USE_SSL=false
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin
-      - MINIO_BUCKET_NAME=charts
-    depends_on:
-      minio:
-        condition: service_healthy
-    networks:
-      - mcp-network
+      - minio-network
     restart: unless-stopped
 
 networks:
-  mcp-network:
+  minio-network:
     driver: bridge
 
 volumes:
