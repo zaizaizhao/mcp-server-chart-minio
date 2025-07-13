@@ -39,6 +39,12 @@ COPY . .
 # Build the application
 RUN npm run build
 
+# Debug: List build output
+RUN echo "构建完成，检查 dist 目录..." && \
+    ls -la dist/ && \
+    echo "检查 dist/src 目录..." && \
+    ls -la dist/src/ || echo "dist/src 目录不存在"
+
 # Production stage
 FROM node:20 AS production
 
