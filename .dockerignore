@@ -24,9 +24,9 @@ pids
 # Coverage directory used by tools like istanbul
 coverage/
 
-# Build outputs
-dist/
-build/
+# Build outputs - commented out to allow dist in Docker builds
+# dist/
+# build/
 
 # IDE files
 .vscode/
