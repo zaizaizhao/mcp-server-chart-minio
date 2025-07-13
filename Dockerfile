@@ -1,24 +1,19 @@
 # Multi-stage build for MCP Server Chart MinIO
-FROM node:20-alpine AS builder
+FROM node:20 AS builder
 
-# Install system dependencies required for Canvas rendering
-RUN apk add --no-cache \
-    pkgconfig \
-    cairo-dev \
-    pango-dev \
-    libpng-dev \
-    jpeg-dev \
-    giflib-dev \
-    librsvg-dev \
-    pixman-dev \
-    freetype-dev \
-    fontconfig-dev \
-    libjpeg-turbo-dev \
+# Install system dependencies required for Canvas rendering (官网推荐)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libcairo2-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libgif-dev \
+    librsvg2-dev \
+    pkg-config \
     python3 \
     make \
     g++ \
-    libc6-compat \
-    gcompat
+    && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
@@ -30,9 +25,6 @@ COPY package*.json ./
 ENV PYTHON=/usr/bin/python3
 ENV CANVAS_PREBUILT=false
 ENV NODE_ENV=development
-# Fix for canvas compilation in Alpine
-ENV LDFLAGS="-L/usr/lib"
-ENV CPPFLAGS="-I/usr/include"
 
 # Install dependencies with verbose output
 # set ali mirror to speed up npm install
@@ -48,32 +40,29 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM node:20-alpine AS production
+FROM node:20 AS production
 
 # Install runtime dependencies for Canvas
-RUN apk add --no-cache \
-    cairo \
-    pango \
-    libpng \
-    jpeg \
-    giflib \
-    librsvg \
-    pixman \
-    freetype \
-    fontconfig \
-    libjpeg-turbo \
-    font-noto \
-    font-noto-cjk \
-    font-noto-emoji \
-    libc6-compat \
-    gcompat
+RUN apt-get update && apt-get install -y \
+    libcairo2 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libjpeg62-turbo \
+    libgif7 \
+    librsvg2-2 \
+    libfontconfig1 \
+    fonts-noto \
+    fonts-noto-cjk \
+    fonts-noto-color-emoji \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create app directory
 WORKDIR /app
 
 # Create non-root user
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nestjs -u 1001
+RUN groupadd -r nodejs --gid=1001 && \
+    useradd -r -g nodejs --uid=1001 nestjs
 
 # Copy built application and node_modules from builder stage
 COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
