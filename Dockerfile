@@ -1,5 +1,5 @@
 # Multi-stage build for MCP Server Chart MinIO
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Install system dependencies required for Canvas rendering
 RUN apk add --no-cache \
@@ -11,9 +11,14 @@ RUN apk add --no-cache \
     giflib-dev \
     librsvg-dev \
     pixman-dev \
+    freetype-dev \
+    fontconfig-dev \
+    libjpeg-turbo-dev \
     python3 \
     make \
-    g++
+    g++ \
+    libc6-compat \
+    gcompat
 
 # Set working directory
 WORKDIR /app
@@ -21,8 +26,20 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Set environment variables for Canvas compilation
+ENV PYTHON=/usr/bin/python3
+ENV CANVAS_PREBUILT=false
+ENV NODE_ENV=development
+# Fix for canvas compilation in Alpine
+ENV LDFLAGS="-L/usr/lib"
+ENV CPPFLAGS="-I/usr/include"
+
+# Install dependencies with verbose output
+# set ali mirror to speed up npm install
+RUN echo "开始安装依赖..." && \
+    npm ci --loglevel=verbose && \
+    echo "依赖安装完成，清理缓存..." && \
+    npm cache clean --force
 
 # Copy source code
 COPY . .
@@ -31,7 +48,7 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:20-alpine AS production
 
 # Install runtime dependencies for Canvas
 RUN apk add --no-cache \
@@ -42,9 +59,14 @@ RUN apk add --no-cache \
     giflib \
     librsvg \
     pixman \
+    freetype \
+    fontconfig \
+    libjpeg-turbo \
     font-noto \
     font-noto-cjk \
-    font-noto-emoji
+    font-noto-emoji \
+    libc6-compat \
+    gcompat
 
 # Create app directory
 WORKDIR /app
@@ -69,4 +91,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
 
 # Start the application
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
