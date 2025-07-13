@@ -6,6 +6,9 @@ import * as Minio from 'minio';
 export class MinioService {
   private readonly logger = new Logger(MinioService.name);
   private minioClient: Minio.Client;
+  private externalEndpoint: string;
+  private externalPort: number;
+  private useSSL: boolean;
 
   constructor(private configService: ConfigService) {
     this.initializeMinioClient();
@@ -14,19 +17,26 @@ export class MinioService {
   private initializeMinioClient() {
     const endPoint = this.configService.get<string>('MINIO_ENDPOINT', 'localhost');
     const port = parseInt(this.configService.get<string>('MINIO_PORT', '9000'));
-    const useSSL = this.configService.get<string>('MINIO_USE_SSL', 'false') === 'true';
+    this.useSSL = this.configService.get<string>('MINIO_USE_SSL', 'false') === 'true';
     const accessKey = this.configService.get<string>('MINIO_ACCESS_KEY', 'minioadmin');
     const secretKey = this.configService.get<string>('MINIO_SECRET_KEY', 'minioadmin');
+
+    // 外部访问端点配置，用于生成可外部访问的URL
+    this.externalEndpoint = this.configService.get<string>('MINIO_EXTERNAL_ENDPOINT', endPoint);
+    this.externalPort = parseInt(this.configService.get<string>('MINIO_EXTERNAL_PORT', port.toString()));
 
     this.minioClient = new Minio.Client({
       endPoint,
       port,
-      useSSL,
+      useSSL: this.useSSL,
       accessKey,
       secretKey,
     });
 
     this.logger.log(`MinIO client initialized with endpoint: ${endPoint}:${port}`);
+    if (this.externalEndpoint !== endPoint || this.externalPort !== port) {
+      this.logger.log(`External access configured: ${this.externalEndpoint}:${this.externalPort}`);
+    }
   }
 
   async listBuckets() {
@@ -80,6 +90,32 @@ export class MinioService {
       });
     } catch (error) {
       this.logger.error(`Error listing objects in bucket '${bucketName}':`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * 生成外部可访问的预签名URL
+   * 解决Docker部署时URL使用容器名而非外部IP的问题
+   */
+  async getExternalPresignedUrl(bucketName: string, objectName: string, expiry: number = 24 * 60 * 60): Promise<string> {
+    try {
+      // 首先获取内部预签名URL
+      const internalUrl = await this.minioClient.presignedGetObject(bucketName, objectName, expiry);
+      
+      // 如果配置了外部端点，替换URL中的域名和端口
+      if (this.externalEndpoint && this.externalEndpoint !== this.configService.get<string>('MINIO_ENDPOINT', 'localhost')) {
+        const url = new URL(internalUrl);
+        url.hostname = this.externalEndpoint;
+        url.port = this.externalPort.toString();
+        
+        this.logger.debug(`URL transformed: ${internalUrl} -> ${url.toString()}`);
+        return url.toString();
+      }
+      
+      return internalUrl;
+    } catch (error) {
+      this.logger.error(`Error generating external presigned URL for '${objectName}':`, error);
       throw error;
     }
   }

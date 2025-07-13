@@ -47,17 +47,25 @@ docker-compose up -d
 
 ### 3. Docker Compose（服务器部署）
 
-在服务器上部署时，修改 `docker-compose.yml` 中的 `PUBLIC_API_URL`：
+在服务器上部署时，需要配置外部访问的URL：
 
+**方法一：修改 `docker-compose.yml`**
 ```yaml
 environment:
   - PUBLIC_API_URL=http://your-server-ip:3000  # 替换为实际服务器IP
+  - MINIO_EXTERNAL_ENDPOINT=your-server-ip     # 替换为实际服务器IP
+  - MINIO_EXTERNAL_PORT=9000                   # MinIO外部端口
 ```
 
-或者使用环境变量覆盖：
+**方法二：使用环境变量覆盖**
 ```bash
-PUBLIC_API_URL=http://192.168.1.100:3000 docker-compose up -d
+PUBLIC_API_URL=http://192.168.1.100:3000 \
+MINIO_EXTERNAL_ENDPOINT=192.168.1.100 \
+MINIO_EXTERNAL_PORT=9000 \
+docker-compose up -d
 ```
+
+> **重要提示**：`MINIO_EXTERNAL_ENDPOINT` 和 `MINIO_EXTERNAL_PORT` 是解决Docker部署时MinIO URL使用容器名问题的关键配置。这些变量确保生成的图表URL能够从外部访问。
 
 ### 4. 生产环境部署
 

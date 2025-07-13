@@ -21,12 +21,15 @@
     "docker:build": "docker build -t mcp-server-chart-minio .",
     "docker:run": "docker run -p 3000:3000 --env-file .env mcp-server-chart-minio",
     "docker:up": "docker-compose up -d",
+    "docker:up:prod": "docker-compose --env-file .env.production up -d",
     "docker:up:minio": "docker-compose -f docker-compose.minio.yml up -d",
     "docker:down": "docker-compose down",
     "docker:down:minio": "docker-compose -f docker-compose.minio.yml down",
     "docker:logs": "docker-compose logs -f",
     "docker:logs:app": "docker-compose logs -f app",
-    "docker:logs:minio": "docker-compose logs -f minio"
+    "docker:logs:minio": "docker-compose logs -f minio",
+    "deploy:prod": "bash deploy-production.sh",
+    "deploy:prod:win": "deploy-production.bat"
   },
   "dependencies": {
     "@antv/gpt-vis-ssr": "^0.1.6",

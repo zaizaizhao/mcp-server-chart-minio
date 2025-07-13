@@ -39,6 +39,10 @@ services:
       - MINIO_ACCESS_KEY=minioadmin
       - MINIO_SECRET_KEY=minioadmin
       - MINIO_BUCKET_NAME=charts
+      # External MinIO access configuration
+      # Replace 'localhost' with your server's IP when deploying to production
+      - MINIO_EXTERNAL_ENDPOINT=localhost
+      - MINIO_EXTERNAL_PORT=9000
     depends_on:
       minio:
         condition: service_healthy

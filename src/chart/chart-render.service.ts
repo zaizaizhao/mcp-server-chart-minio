@@ -262,8 +262,8 @@ export class ChartRenderService {
         'Cache-Control': 'public, max-age=3600', // 缓存1小时
       });
 
-      // 8. 生成访问URL
-      const url = await client.presignedGetObject(this.BUCKET_NAME, filename, 24 * 60 * 60); // 24小时有效期
+      // 8. 生成外部可访问的URL
+      const url = await this.minioService.getExternalPresignedUrl(this.BUCKET_NAME, filename, 24 * 60 * 60); // 24小时有效期
       
       this.logger.log(`Chart rendered and uploaded: ${filename}`);
       
