@@ -44,6 +44,7 @@ docker-compose up -d
 
 3. 访问服务：
    - 📊 **API 服务**: http://localhost:3000
+   - 💾 **MCP 本地部署url**: http://your_local_ip:3000/api/chart/render
    - 📖 **API 文档**: http://localhost:3000/api/docs  
    - 💾 **MinIO 控制台**: http://localhost:9001 (minioadmin/minioadmin)
 
@@ -409,6 +410,90 @@ docker run --rm -v mcp-server-chart-minio_minio_data:/source -v $(pwd):/backup b
 
 # 恢复数据
 docker run --rm -v mcp-server-chart-minio_minio_data:/target -v $(pwd):/backup busybox tar xzf /backup/minio-backup.tar.gz -C /target
+```
+
+### Access Denied 错误解决方案
+
+#### 问题描述
+出现类似以下的错误信息：
+```xml
+<Error>
+<Code>AccessDenied</Code>
+<Message>Access Denied.</Message>
+<Key>chart-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.png</Key>
+<BucketName>charts</BucketName>
+</Error>
+```
+
+#### 原因分析
+这个错误通常是由于 MinIO 存储桶权限配置不正确导致的：
+1. **存储桶缺少公共读取策略**：默认情况下，MinIO 拒绝所有未授权访问
+2. **权限策略未正确设置**：即使存储桶存在，也需要明确的访问策略
+3. **服务启动顺序问题**：应用服务可能在 MinIO 完全准备好之前就尝试设置策略
+
+#### 解决方案
+
+**方法一：重启服务（推荐，最简单）**
+```bash
+# 完全重启所有服务
+docker-compose down
+docker-compose up -d
+
+# 或者只重启应用服务
+docker-compose restart app
+```
+
+**方法二：手动设置存储桶策略**
+1. 访问 MinIO 管理控制台：http://localhost:9001 （或您的服务器IP:9001）
+2. 使用默认账户登录：
+   - 用户名：`minioadmin`
+   - 密码：`minioadmin`
+3. 选择 `charts` 存储桶
+4. 点击 "Access Policy"
+5. 设置为 "Read Only" 或 "Read Write"
+
+**方法三：使用诊断脚本**
+```bash
+# Linux/macOS
+chmod +x debug-minio.sh
+./debug-minio.sh
+
+# Windows PowerShell
+PowerShell -ExecutionPolicy Bypass -File debug-minio.ps1
+```
+
+**方法四：使用 mc 命令行工具**
+```bash
+# 安装 MinIO 客户端
+docker run --rm -it --entrypoint=/bin/sh minio/mc
+
+# 配置别名
+mc alias set minio http://localhost:9000 minioadmin minioadmin
+
+# 设置公共访问策略
+mc anonymous set public minio/charts
+```
+
+#### 验证修复
+1. **检查存储桶访问**：
+   ```bash
+   curl -I http://localhost:9000/charts/
+   # 应该返回 HTTP 200 而不是 403
+   ```
+
+2. **测试图表生成**：
+   ```bash
+   curl -X POST http://localhost:3000/api/chart-generators/line \
+     -H "Content-Type: application/json" \
+     -d '{"data":[{"time":"Jan","value":100}],"title":"Test Chart"}'
+   ```
+
+3. **检查生成的URL**：确保返回的URL可以直接在浏览器中访问
+
+#### 预防措施
+- 确保在生产环境部署时正确配置了 `MINIO_EXTERNAL_ENDPOINT`
+- 定期备份 MinIO 数据和配置
+- 监控存储桶策略设置，避免意外修改
 ```
 
 ## 📖 API 文档

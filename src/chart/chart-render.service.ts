@@ -144,7 +144,7 @@ export class ChartRenderService {
   private async initializeBucket() {
     try {
       await this.minioService.createBucket(this.BUCKET_NAME, 'us-east-1');
-      this.logger.log(`Charts bucket '${this.BUCKET_NAME}' initialized`);
+      this.logger.log(`Charts bucket '${this.BUCKET_NAME}' initialized with public read access`);
     } catch (error) {
       this.logger.error('Failed to initialize charts bucket:', error);
     }
@@ -263,7 +263,15 @@ export class ChartRenderService {
       });
 
       // 8. 生成外部可访问的URL
-      const url = await this.minioService.getExternalPresignedUrl(this.BUCKET_NAME, filename, 24 * 60 * 60); // 24小时有效期
+      // 优先使用公共URL（永久有效），如果失败则使用预签名URL
+      let url: string;
+      try {
+        url = await this.minioService.getPublicUrl(this.BUCKET_NAME, filename);
+        this.logger.debug(`Using public URL: ${url}`);
+      } catch (error) {
+        this.logger.warn('Failed to generate public URL, falling back to presigned URL:', error.message);
+        url = await this.minioService.getExternalPresignedUrl(this.BUCKET_NAME, filename, 24 * 60 * 60); // 24小时有效期
+      }
       
       this.logger.log(`Chart rendered and uploaded: ${filename}`);
       

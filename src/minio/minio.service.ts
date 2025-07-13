@@ -57,8 +57,14 @@ export class MinioService {
         const bucketRegion = region || 'us-east-1';
         await this.minioClient.makeBucket(bucketName, bucketRegion);
         this.logger.log(`Bucket '${bucketName}' created successfully`);
+        
+        // 设置存储桶为公共读取策略，允许外部访问图片
+        await this.setBucketPublicReadPolicy(bucketName);
+        
         return { message: `Bucket '${bucketName}' created successfully` };
       } else {
+        // 即使存储桶已存在，也要确保策略正确
+        await this.setBucketPublicReadPolicy(bucketName);
         return { message: `Bucket '${bucketName}' already exists` };
       }
     } catch (error) {
@@ -95,6 +101,22 @@ export class MinioService {
   }
 
   /**
+   * 生成公共访问URL（当存储桶设置了公共读取策略时）
+   * 这种方式生成的URL是永久有效的，不需要预签名
+   */
+  async getPublicUrl(bucketName: string, objectName: string): Promise<string> {
+    try {
+      const protocol = this.useSSL ? 'https' : 'http';
+      const url = `${protocol}://${this.externalEndpoint}:${this.externalPort}/${bucketName}/${objectName}`;
+      this.logger.debug(`Generated public URL: ${url}`);
+      return url;
+    } catch (error) {
+      this.logger.error(`Error generating public URL for '${objectName}':`, error);
+      throw error;
+    }
+  }
+
+  /**
    * 生成外部可访问的预签名URL
    * 解决Docker部署时URL使用容器名而非外部IP的问题
    */
@@ -117,6 +139,32 @@ export class MinioService {
     } catch (error) {
       this.logger.error(`Error generating external presigned URL for '${objectName}':`, error);
       throw error;
+    }
+  }
+
+  /**
+   * 设置存储桶的公共读取策略
+   * 允许匿名用户读取存储桶中的所有对象
+   */
+  private async setBucketPublicReadPolicy(bucketName: string) {
+    try {
+      const policy = {
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Principal: { AWS: ['*'] },
+            Action: ['s3:GetObject'],
+            Resource: [`arn:aws:s3:::${bucketName}/*`]
+          }
+        ]
+      };
+
+      await this.minioClient.setBucketPolicy(bucketName, JSON.stringify(policy));
+      this.logger.log(`Public read policy set for bucket '${bucketName}'`);
+    } catch (error) {
+      this.logger.warn(`Failed to set public policy for bucket '${bucketName}':`, error.message);
+      // 不抛出错误，因为这不是致命的
     }
   }
 
