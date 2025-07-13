@@ -31,6 +31,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - HOST=0.0.0.0
+      - PUBLIC_API_URL=http://localhost:3000
       - MINIO_ENDPOINT=minio
       - MINIO_PORT=9000
       - MINIO_USE_SSL=false
