@@ -1,19 +1,19 @@
 # Multi-stage build for MCP Server Chart MinIO
-FROM node:20 AS builder
+FROM node:20-alpine AS builder
 
-# Install system dependencies required for Canvas rendering (官网推荐)
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libjpeg-dev \
-    libgif-dev \
-    librsvg2-dev \
-    pkg-config \
+# Install system dependencies required for Canvas rendering (Alpine版本)
+RUN apk add --no-cache \
+    build-base \
+    cairo-dev \
+    pango-dev \
+    jpeg-dev \
+    giflib-dev \
+    librsvg-dev \
+    pkgconfig \
     python3 \
     make \
     g++ \
-    && rm -rf /var/lib/apt/lists/*
+    pixman-dev
 
 # Set working directory
 WORKDIR /app
@@ -31,7 +31,8 @@ ENV NODE_ENV=development
 RUN echo "开始安装依赖..." && \
     npm ci --loglevel=verbose && \
     echo "依赖安装完成，清理缓存..." && \
-    npm cache clean --force
+    npm cache clean --force && \
+    rm -rf /tmp/* /var/cache/apk/*
 
 # Copy source code
 COPY . .
@@ -40,34 +41,38 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM node:20 AS production
+FROM node:20-alpine AS production
 
-# Install runtime dependencies for Canvas
-RUN apt-get update && apt-get install -y \
-    libcairo2 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    libjpeg62-turbo \
-    libgif7 \
-    librsvg2-2 \
-    libfontconfig1 \
-    fonts-noto \
-    fonts-noto-cjk \
-    fonts-noto-color-emoji \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
+# Install runtime dependencies for Canvas (Alpine版本)
+RUN apk add --no-cache \
+    cairo \
+    pango \
+    jpeg \
+    giflib \
+    librsvg \
+    fontconfig \
+    ttf-dejavu \
+    ttf-liberation \
+    font-noto \
+    font-noto-cjk \
+    font-noto-emoji \
+    wget
 
 # Create app directory
 WORKDIR /app
 
-# Create non-root user
-RUN groupadd -r nodejs --gid=1001 && \
-    useradd -r -g nodejs --uid=1001 nestjs
+# Create non-root user (Alpine使用addgroup和adduser)
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S -D -H -u 1001 -s /sbin/nologin -G nodejs nestjs
 
 # Copy built application and node_modules from builder stage
 COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
-COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/package*.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production --no-audit --no-fund && \
+    npm cache clean --force && \
+    rm -rf /tmp/* /var/cache/apk/*
 
 # Switch to non-root user
 USER nestjs

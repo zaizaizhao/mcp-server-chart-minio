@@ -380,10 +380,43 @@ export class ChartRenderService {
           { source: 'Node 3', target: 'Node 4', name: 'Connection 3', weight: 1 }
         ]
       },
+      'mind-map': {
+        name: '项目计划',
+        children: [
+          {
+            name: '研究阶段',
+            children: [
+              { name: '市场调研' },
+              { name: '技术可行性分析' }
+            ]
+          },
+          {
+            name: '设计阶段',
+            children: [
+              { name: '产品功能确定' },
+              { name: 'UI 设计' }
+            ]
+          },
+          {
+            name: '开发阶段',
+            children: [
+              { name: '编写代码' },
+              { name: '单元测试' }
+            ]
+          },
+          {
+            name: '测试阶段',
+            children: [
+              { name: '功能测试' },
+              { name: '性能测试' }
+            ]
+          }
+        ]
+      },
     };
 
     // 对于特殊图表类型，返回对象而不是数组
-    if (chartType === 'flow-diagram' || chartType === 'network-graph') {
+    if (chartType === 'flow-diagram' || chartType === 'network-graph' || chartType === 'mind-map') {
       return sampleData[chartType];
     }
 
@@ -679,26 +712,47 @@ export class ChartRenderService {
    * 验证思维导图数据
    */
   private validateMindMapData(data: any): any {
-    console.debug('validateMindMapData input:', JSON.stringify(data, null, 2));
+    this.logger.debug('validateMindMapData input:', JSON.stringify(data, null, 2));
     
     // 如果传入的是对象结构（符合gpt-vis-ssr格式）
-    if (data && typeof data === 'object' && (data.name || data.label)) {
-      return data;
+    if (data && typeof data === 'object' && !Array.isArray(data)) {
+      // 确保每个节点都有name属性，递归处理children
+      const processNode = (node: any): any => {
+        const result: any = {
+          name: node.name || node.label || node.title || node.id || 'Unnamed Node'
+        };
+        
+        if (node.children && Array.isArray(node.children) && node.children.length > 0) {
+          result.children = node.children.map(processNode);
+        }
+        
+        return result;
+      };
+      
+      const processedData = processNode(data);
+      this.logger.debug('validateMindMapData processed result:', JSON.stringify(processedData, null, 2));
+      return processedData;
     }
     
     // 如果是数组，转换为树结构
     if (Array.isArray(data) && data.length > 0) {
-      return {
-        name: 'Root',
-        children: data.map((item, index) => ({
-          name: item.name || item.label || `Node ${index + 1}`,
-          children: item.children || []
+      const rootItem = data[0];
+      const result = {
+        name: rootItem?.name || rootItem?.label || rootItem?.title || 'Root Node',
+        children: data.slice(1).map((item, index) => ({
+          name: item.name || item.label || item.title || item.id || `Node ${index + 1}`,
+          children: item.children ? item.children.map((child: any) => ({
+            name: child.name || child.label || child.title || child.id || 'Child Node'
+          })) : []
         }))
       };
+      
+      this.logger.debug('validateMindMapData array result:', JSON.stringify(result, null, 2));
+      return result;
     }
     
     // 默认结构
-    return {
+    const defaultResult = {
       name: 'Root Node',
       children: [
         { name: 'Child 1' },
@@ -706,6 +760,9 @@ export class ChartRenderService {
         { name: 'Child 3' }
       ]
     };
+    
+    this.logger.debug('validateMindMapData default result:', JSON.stringify(defaultResult, null, 2));
+    return defaultResult;
   }
 
   /**
