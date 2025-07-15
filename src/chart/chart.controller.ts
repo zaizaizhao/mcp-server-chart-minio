@@ -60,20 +60,25 @@ export class ChartController {
     }
   })
   @ApiResponse({ 
-    status: 201, 
+    status: 200, 
     description: 'Chart rendered successfully',
     schema: {
       type: 'object',
       properties: {
-        url: { 
-          type: 'string', 
-          example: 'http://localhost:9000/charts/chart-uuid.png?X-Amz-...',
-          description: 'MinIO URL to access the rendered chart image'
+        success: { 
+          type: 'boolean', 
+          example: true,
+          description: 'Indicates if the operation was successful'
         },
-        filename: { 
+        errorMessage: { 
           type: 'string', 
-          example: 'chart-12345678-1234-1234-1234-123456789abc.png',
-          description: 'Generated filename in MinIO'
+          example: null,
+          description: 'Error message if operation failed, null if successful'
+        },
+        resultObj: {
+          type: 'string',
+          example: '![Chart](http://localhost:9000/charts/chart-uuid.png)\n\nChart rendered successfully. Direct URL: http://localhost:9000/charts/chart-uuid.png',
+          description: 'Markdown formatted string containing chart image and URL'
         }
       }
     }
@@ -81,7 +86,31 @@ export class ChartController {
   @ApiResponse({ status: 400, description: 'Invalid chart configuration' })
   @ApiResponse({ status: 500, description: 'Chart rendering failed' })
   async renderChart(@Body() chartOptions: ChartOptions) {
-    return await this.chartRenderService.renderChartToUrl(chartOptions);
+    try {
+      const result = await this.chartRenderService.renderChartToUrl(chartOptions);
+      return {
+        success: true,
+        errorMessage: null,
+        resultObj: `![${chartOptions.title || 'Chart'}](${result.url})
+
+Chart rendered successfully. 
+- Direct URL: ${result.url}
+- Filename: ${result.filename}
+- Type: ${chartOptions.type}
+- Rendered at: ${new Date().toISOString()}`
+      };
+    } catch (error) {
+      return {
+        success: false,
+        errorMessage: error.message || 'Chart rendering failed',
+        resultObj: `❌ Chart rendering failed: ${error.message || 'Unknown error'}
+
+**Error Details:**
+- Chart Type: ${chartOptions.type}
+- Error Time: ${new Date().toISOString()}
+- Source: mcp-server-chart`
+      };
+    }
   }
 
   @Get('types')
@@ -127,9 +156,19 @@ export class ChartController {
     schema: {
       type: 'object',
       properties: {
-        url: { type: 'string' },
-        filename: { type: 'string' },
-        chartConfig: { type: 'object' }
+        success: { 
+          type: 'boolean', 
+          example: true 
+        },
+        errorMessage: { 
+          type: 'string', 
+          example: null 
+        },
+        resultObj: {
+          type: 'string',
+          example: '![Sample Line Chart](http://localhost:9000/charts/chart-uuid.png)\n\nSample chart generated successfully.',
+          description: 'Markdown formatted string containing sample chart'
+        }
       }
     }
   })
@@ -137,22 +176,46 @@ export class ChartController {
     @Query('type') type: string = 'line',
     @Query('theme') theme: 'default' | 'academy' = 'default'
   ) {
-    const sampleData = this.chartRenderService.generateSampleData(type);
-    
-    const chartOptions: ChartOptions = {
-      type,
-      data: sampleData,
-      title: `Sample ${type.charAt(0).toUpperCase() + type.slice(1)} Chart`,
-      theme,
-      width: 800,
-      height: 600,
-    };
+    try {
+      const sampleData = this.chartRenderService.generateSampleData(type);
+      
+      const chartOptions: ChartOptions = {
+        type,
+        data: sampleData,
+        title: `Sample ${type.charAt(0).toUpperCase() + type.slice(1)} Chart`,
+        theme,
+        width: 800,
+        height: 600,
+      };
 
-    const result = await this.chartRenderService.renderChartToUrl(chartOptions);
-    
-    return {
-      ...result,
-      chartConfig: chartOptions,
-    };
+      const result = await this.chartRenderService.renderChartToUrl(chartOptions);
+      
+      return {
+        success: true,
+        errorMessage: null,
+        resultObj: `![${chartOptions.title}](${result.url})
+
+📊 **Sample ${type} chart generated successfully**
+
+- Chart Type: ${type}
+- Direct URL: ${result.url}
+- Filename: ${result.filename}
+- Theme: ${theme}
+- Generated at: ${new Date().toISOString()}`
+      };
+    } catch (error) {
+      return {
+        success: false,
+        errorMessage: error.message || 'Sample chart generation failed',
+        resultObj: `❌ **Sample chart generation failed**
+
+${error.message || 'Unknown error'}
+
+**Error Details:**
+- Chart Type: ${type}
+- Error Time: ${new Date().toISOString()}
+- Source: mcp-server-chart`
+      };
+    }
   }
 }
