@@ -27,7 +27,7 @@ COPY package*.json ./
 # Set environment variables for Canvas compilation
 ENV PYTHON=/usr/bin/python3
 ENV CANVAS_PREBUILT=false
-npm ci --loglevel=verbose && \
+RUN npm ci --loglevel=verbose && \
  echo "依赖安装完成，清理缓存..." && \
  npm cache clean --force && \
  rm -rf /tmp/* /var/cache/apk/*
