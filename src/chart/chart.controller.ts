@@ -4,9 +4,17 @@ import {
   ApiOperation, 
   ApiResponse, 
   ApiBody, 
-  ApiQuery 
+  ApiQuery,
+  ApiOkResponse,
+  ApiBadRequestResponse,
+  ApiInternalServerErrorResponse
 } from '@nestjs/swagger';
 import { ChartRenderService, ChartOptions } from './chart-render.service';
+import { ChartRenderDto } from './dto/chart.dto';
+import { 
+  ChartRenderResponseDto, 
+  SupportedTypesResponseDto 
+} from '../common/dto/common.dto';
 
 @ApiTags('chart')
 @Controller('chart')
@@ -17,75 +25,15 @@ export class ChartController {
   @ApiOperation({ summary: 'Render chart and upload to MinIO' })
   @ApiBody({
     description: 'Chart configuration',
-    schema: {
-      type: 'object',
-      properties: {
-        type: { 
-          type: 'string', 
-          example: 'line',
-          description: 'Chart type (line, pie, column, bar, etc.)'
-        },
-        data: { 
-          type: 'array',
-          example: [
-            { time: '2020', value: 100 },
-            { time: '2021', value: 120 },
-            { time: '2022', value: 140 }
-          ],
-          description: 'Chart data'
-        },
-        title: { 
-          type: 'string', 
-          example: 'Sample Chart',
-          description: 'Chart title (optional)'
-        },
-        width: { 
-          type: 'number', 
-          example: 800,
-          description: 'Chart width (optional, default: 800)'
-        },
-        height: { 
-          type: 'number', 
-          example: 600,
-          description: 'Chart height (optional, default: 600)'
-        },
-        theme: {
-          type: 'string',
-          enum: ['default', 'academy'],
-          example: 'default',
-          description: 'Chart theme (optional)'
-        }
-      },
-      required: ['type', 'data']
-    }
+    type: ChartRenderDto
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOkResponse({ 
     description: 'Chart rendered successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { 
-          type: 'boolean', 
-          example: true,
-          description: 'Indicates if the operation was successful'
-        },
-        errorMessage: { 
-          type: 'string', 
-          example: null,
-          description: 'Error message if operation failed, null if successful'
-        },
-        resultObj: {
-          type: 'string',
-          example: '![Chart](http://localhost:9000/charts/chart-uuid.png)\n\nChart rendered successfully. Direct URL: http://localhost:9000/charts/chart-uuid.png',
-          description: 'Markdown formatted string containing chart image and URL'
-        }
-      }
-    }
+    type: ChartRenderResponseDto
   })
-  @ApiResponse({ status: 400, description: 'Invalid chart configuration' })
-  @ApiResponse({ status: 500, description: 'Chart rendering failed' })
-  async renderChart(@Body() chartOptions: ChartOptions) {
+  @ApiBadRequestResponse({ description: 'Invalid chart configuration' })
+  @ApiInternalServerErrorResponse({ description: 'Chart rendering failed' })
+  async renderChart(@Body() chartOptions: ChartRenderDto): Promise<ChartRenderResponseDto> {
     try {
       const result = await this.chartRenderService.renderChartToUrl(chartOptions);
       return {
@@ -115,21 +63,11 @@ Chart rendered successfully.
 
   @Get('types')
   @ApiOperation({ summary: 'Get supported chart types' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOkResponse({ 
     description: 'List of supported chart types',
-    schema: {
-      type: 'object',
-      properties: {
-        types: {
-          type: 'array',
-          items: { type: 'string' },
-          example: ['line', 'pie', 'column', 'bar', 'scatter']
-        }
-      }
-    }
+    type: SupportedTypesResponseDto
   })
-  getSupportedTypes() {
+  getSupportedTypes(): SupportedTypesResponseDto {
     return {
       types: this.chartRenderService.getSupportedChartTypes()
     };
@@ -150,32 +88,14 @@ Chart rendered successfully.
     example: 'default',
     enum: ['default', 'academy']
   })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOkResponse({ 
     description: 'Sample chart rendered successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { 
-          type: 'boolean', 
-          example: true 
-        },
-        errorMessage: { 
-          type: 'string', 
-          example: null 
-        },
-        resultObj: {
-          type: 'string',
-          example: '![Sample Line Chart](http://localhost:9000/charts/chart-uuid.png)\n\nSample chart generated successfully.',
-          description: 'Markdown formatted string containing sample chart'
-        }
-      }
-    }
+    type: ChartRenderResponseDto
   })
   async generateSampleChart(
     @Query('type') type: string = 'line',
     @Query('theme') theme: 'default' | 'academy' = 'default'
-  ) {
+  ): Promise<ChartRenderResponseDto> {
     try {
       const sampleData = this.chartRenderService.generateSampleData(type);
       

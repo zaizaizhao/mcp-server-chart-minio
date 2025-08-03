@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { 
   ApiTags, 
   ApiOperation, 
-  ApiResponse, 
+  ApiCreatedResponse, ApiBadRequestResponse, ApiInternalServerErrorResponse, 
   ApiBody 
 } from '@nestjs/swagger';
 import { ChartRenderService } from '../chart/chart-render.service';
@@ -71,23 +71,9 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Area chart generated successfully',
-    type: ChartResponseDto,
-    example: {
-      url: 'http://localhost:9000/charts/area-chart-uuid.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&...',
-      filename: 'area-chart-12345678-1234-1234-1234-123456789abc.png'
-    }
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid chart data or configuration provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Area chart generated successfully', type: ChartResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid chart data or configuration provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateAreaChart(@Body() body: AreaChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'area', ...body });
   }
@@ -120,19 +106,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Bar chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid chart data or configuration provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Bar chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid chart data or configuration provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateBarChart(@Body() body: BarChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'bar', ...body });
   }
@@ -164,19 +141,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Box plot chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid statistical data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Box plot chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid statistical data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateBoxplotChart(@Body() body: BoxplotChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'boxplot', ...body });
   }
@@ -209,19 +177,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Column chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid chart data or configuration provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Column chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid chart data or configuration provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateColumnChart(@Body() body: ColumnChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'column', ...body });
   }
@@ -255,19 +214,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'District map generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid geographic data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'District map generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid geographic data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateDistrictMap(@Body() body: DistrictMapDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'district-map', ...body });
   }
@@ -300,19 +250,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Dual axes chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid dual axes data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Dual axes chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid dual axes data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateDualAxesChart(@Body() body: DualAxesDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'dual-axes', ...body });
   }
@@ -349,19 +290,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Fishbone diagram generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid fishbone diagram data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Fishbone diagram generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid fishbone diagram data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateFishboneDiagram(@Body() body: FishboneDiagramDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'fishbone-diagram', ...body });
   }
@@ -404,19 +336,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Flow diagram generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid flow diagram structure provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Flow diagram generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid flow diagram structure provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateFlowDiagram(@Body() body: FlowDiagramDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'flow-diagram', ...body });
   }
@@ -450,19 +373,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Funnel chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid funnel data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Funnel chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid funnel data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateFunnelChart(@Body() body: FunnelChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'funnel', ...body });
   }
@@ -498,19 +412,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Histogram chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid histogram data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Histogram chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid histogram data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateHistogramChart(@Body() body: HistogramChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'histogram', ...body });
   }
@@ -545,19 +450,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Line chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid line chart data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Line chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid line chart data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateLineChart(@Body() body: LineChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'line', ...body });
   }
@@ -587,19 +483,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Liquid chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid liquid chart data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Liquid chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid liquid chart data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateLiquidChart(@Body() body: LiquidChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'liquid', ...body });
   }
@@ -639,19 +526,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Mind map generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid mind map structure provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Mind map generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid mind map structure provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateMindMap(@Body() body: MindMapDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'mind-map', ...body });
   }
@@ -690,19 +568,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Network graph generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid network graph data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Network graph generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid network graph data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateNetworkGraph(@Body() body: NetworkGraphDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'network-graph', ...body });
   }
@@ -738,19 +607,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Organization chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid organization chart data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Organization chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid organization chart data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateOrganizationChart(@Body() body: OrganizationChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'organization-chart', ...body });
   }
@@ -784,19 +644,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Path map generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid path map data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Path map generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid path map data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generatePathMap(@Body() body: PathMapDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'path-map', ...body });
   }
@@ -830,19 +681,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Pie chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid pie chart data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Pie chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid pie chart data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generatePieChart(@Body() body: PieChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'pie', ...body });
   }
@@ -876,19 +718,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Pin map generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid pin map coordinates provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Pin map generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid pin map coordinates provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generatePinMap(@Body() body: PinMapDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'pin-map', ...body });
   }
@@ -923,19 +756,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Radar chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid radar chart data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Radar chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid radar chart data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateRadarChart(@Body() body: RadarChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'radar', ...body });
   }
@@ -971,19 +795,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Sankey chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid Sankey flow data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Sankey chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid Sankey flow data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateSankeyChart(@Body() body: SankeyChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'sankey', ...body });
   }
@@ -1020,19 +835,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Scatter plot generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid scatter plot data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Scatter plot generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid scatter plot data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateScatterChart(@Body() body: ScatterChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'scatter', ...body });
   }
@@ -1070,19 +876,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Treemap chart generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid treemap hierarchical data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Treemap chart generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid treemap hierarchical data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateTreemapChart(@Body() body: TreemapChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'treemap', ...body });
   }
@@ -1118,19 +915,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Venn diagram generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid Venn diagram set data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Venn diagram generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid Venn diagram set data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateVennChart(@Body() body: VennChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'venn', ...body });
   }
@@ -1171,19 +959,10 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Violin plot generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid violin plot distribution data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Violin plot generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid violin plot distribution data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateViolinChart(@Body() body: ViolinChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'violin', ...body });
   }
@@ -1226,20 +1005,12 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiResponse({
-    status: 201,
-    description: 'Word cloud generated successfully',
-    type: ChartResponseDto
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid word cloud data provided'
-  })
-  @ApiResponse({
-    status: 500,
-    description: 'Internal server error during chart generation'
-  })
+  @ApiCreatedResponse({ description: 'Word cloud generated successfully', type: ChartResponseDto
+   })
+  @ApiBadRequestResponse({ description: 'Invalid word cloud data provided' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateWordCloudChart(@Body() body: WordCloudChartDto): Promise<ChartResponseDto> {
     return this.chartRenderService.renderChartToUrl({ type: 'word-cloud', ...body });
   }
 }
+

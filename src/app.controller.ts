@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
+import { HealthResponseDto } from './common/dto/common.dto';
 
 @ApiTags('health')
 @Controller()
@@ -9,26 +10,18 @@ export class AppController {
 
   @Get()
   @ApiOperation({ summary: 'Get welcome message' })
-  @ApiResponse({ status: 200, description: 'Returns welcome message' })
+  @ApiOkResponse({ description: 'Returns welcome message' })
   getHello(): string {
     return this.appService.getHello();
   }
 
   @Get('health')
   @ApiOperation({ summary: 'Health check' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOkResponse({ 
     description: 'Returns application health status',
-    schema: {
-      type: 'object',
-      properties: {
-        status: { type: 'string', example: 'ok' },
-        timestamp: { type: 'string', example: '2025-06-25T14:57:00.000Z' },
-        service: { type: 'string', example: 'MCP Server Chart MinIO' }
-      }
-    }
+    type: HealthResponseDto
   })
-  getHealth(): object {
+  getHealth(): HealthResponseDto {
     return {
       status: 'ok',
       timestamp: new Date().toISOString(),

@@ -1,6 +1,20 @@
 import { Controller, Get, Post, Delete, Param, Query, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
+import { 
+  ApiTags, 
+  ApiOperation, 
+  ApiOkResponse, 
+  ApiCreatedResponse,
+  ApiParam, 
+  ApiQuery, 
+  ApiBody 
+} from '@nestjs/swagger';
 import { MinioService } from './minio.service';
+import {
+  BucketListItemDto,
+  CreateBucketDto,
+  MessageResponseDto,
+  ObjectListItemDto
+} from '../common/dto/common.dto';
 
 @ApiTags('minio')
 @Controller('minio')
@@ -9,65 +23,40 @@ export class MinioController {
 
   @Get('buckets')
   @ApiOperation({ summary: 'List all buckets' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOkResponse({ 
     description: 'Returns list of all buckets',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          name: { type: 'string', example: 'my-bucket' },
-          creationDate: { type: 'string', example: '2025-06-25T14:57:00.000Z' }
-        }
-      }
-    }
+    type: [BucketListItemDto]
   })
-  async listBuckets() {
-    return await this.minioService.listBuckets();
+  async listBuckets(): Promise<BucketListItemDto[]> {
+    const buckets = await this.minioService.listBuckets();
+    return buckets.map(bucket => ({
+      name: bucket.name,
+      creationDate: bucket.creationDate.toISOString()
+    }));
   }
 
   @Post('buckets')
   @ApiOperation({ summary: 'Create a new bucket' })
   @ApiBody({
     description: 'Bucket creation data',
-    schema: {
-      type: 'object',
-      properties: {
-        name: { type: 'string', example: 'my-new-bucket', description: 'Bucket name' },
-        region: { type: 'string', example: 'us-east-1', description: 'Bucket region (optional)' }
-      },
-      required: ['name']
-    }
+    type: CreateBucketDto
   })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiCreatedResponse({ 
     description: 'Bucket created successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        message: { type: 'string', example: 'Bucket \'my-new-bucket\' created successfully' }
-      }
-    }
+    type: MessageResponseDto
   })
-  async createBucket(@Body() createBucketDto: { name: string; region?: string }) {
+  async createBucket(@Body() createBucketDto: CreateBucketDto): Promise<MessageResponseDto> {
     return await this.minioService.createBucket(createBucketDto.name, createBucketDto.region);
   }
 
   @Delete('buckets/:bucketName')
   @ApiOperation({ summary: 'Delete a bucket' })
   @ApiParam({ name: 'bucketName', description: 'Name of the bucket to delete', example: 'my-bucket' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOkResponse({ 
     description: 'Bucket deleted successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        message: { type: 'string', example: 'Bucket \'my-bucket\' deleted successfully' }
-      }
-    }
+    type: MessageResponseDto
   })
-  async deleteBucket(@Param('bucketName') bucketName: string) {
+  async deleteBucket(@Param('bucketName') bucketName: string): Promise<MessageResponseDto> {
     return await this.minioService.deleteBucket(bucketName);
   }
 
@@ -75,25 +64,19 @@ export class MinioController {
   @ApiOperation({ summary: 'List objects in a bucket' })
   @ApiParam({ name: 'bucketName', description: 'Name of the bucket', example: 'my-bucket' })
   @ApiQuery({ name: 'prefix', required: false, description: 'Object prefix filter', example: 'folder/' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiOkResponse({ 
     description: 'Returns list of objects in the bucket',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          name: { type: 'string', example: 'my-file.txt' },
-          size: { type: 'number', example: 1024 },
-          lastModified: { type: 'string', example: '2025-06-25T14:57:00.000Z' }
-        }
-      }
-    }
+    type: [ObjectListItemDto]
   })
   async listObjects(
     @Param('bucketName') bucketName: string,
     @Query('prefix') prefix?: string,
-  ) {
-    return await this.minioService.listObjects(bucketName, prefix);
+  ): Promise<ObjectListItemDto[]> {
+    const objects = await this.minioService.listObjects(bucketName, prefix);
+    return (objects as any[]).map(obj => ({
+      name: obj.name,
+      size: obj.size,
+      lastModified: obj.lastModified.toISOString()
+    }));
   }
 }
