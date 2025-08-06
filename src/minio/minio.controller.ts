@@ -6,7 +6,8 @@ import {
   ApiCreatedResponse,
   ApiParam, 
   ApiQuery, 
-  ApiBody 
+  ApiBody,
+  ApiExcludeController 
 } from '@nestjs/swagger';
 import { MinioService } from './minio.service';
 import {
@@ -16,6 +17,7 @@ import {
   ObjectListItemDto
 } from '../common/dto/common.dto';
 
+@ApiExcludeController()
 @ApiTags('minio')
 @Controller('minio')
 export class MinioController {
