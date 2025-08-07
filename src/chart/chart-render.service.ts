@@ -201,6 +201,14 @@ export class ChartRenderService {
           theme: options.theme || 'default',
         };
       }
+      
+      // 添加额外的属性到渲染选项中
+      Object.keys(options).forEach(key => {
+        // 跳过已经明确设置的属性
+        if (!['type', 'data', 'width', 'height', 'title', 'theme'].includes(key)) {
+          renderOptions[key] = options[key];
+        }
+      });
 
       this.logger.debug(`Render options:`, JSON.stringify(renderOptions, null, 2));
 

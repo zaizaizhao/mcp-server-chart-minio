@@ -300,6 +300,24 @@ export class ColumnChartDto extends BaseChartDto {
   })
   @IsArray()
   data: Array<{ category: string; value: number }>;
+
+  @ApiProperty({
+    description: 'X-axis title',
+    example: 'Quarter',
+    required: false
+  })
+  @IsOptional()
+  @IsString()
+  axisXTitle?: string;
+
+  @ApiProperty({
+    description: 'Y-axis title',
+    example: 'Sales (in thousands)',
+    required: false
+  })
+  @IsOptional()
+  @IsString()
+  axisYTitle?: string;
 }
 
 export class DistrictMapDto extends BaseChartDto {

@@ -164,6 +164,8 @@ export class ChartGeneratorsController {
         description: 'Column chart showing quarterly revenue data',
         value: {
           title: 'Quarterly Revenue 2023',
+          axisXTitle: 'Quarter',
+          axisYTitle: 'Revenue (in thousands)',
           width: 800,
           height: 600,
           theme: 'default',

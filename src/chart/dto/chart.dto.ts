@@ -66,4 +66,22 @@ export class ChartRenderDto {
   @IsOptional()
   @IsEnum(ChartTheme)
   theme?: ChartTheme;
+
+  @ApiProperty({
+    description: 'X-axis title',
+    example: 'Time',
+    required: false
+  })
+  @IsOptional()
+  @IsString()
+  axisXTitle?: string;
+
+  @ApiProperty({
+    description: 'Y-axis title',
+    example: 'Value',
+    required: false
+  })
+  @IsOptional()
+  @IsString()
+  axisYTitle?: string;
 }
