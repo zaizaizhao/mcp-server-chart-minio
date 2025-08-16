@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsArray, IsOptional, IsNumber, IsEnum } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsArray, IsOptional, IsNumber, IsEnum, IsIn, ValidateNested } from 'class-validator';
 
 export enum ChartTheme {
   DEFAULT = 'default',
@@ -131,21 +132,21 @@ export class LineChartDto extends BaseChartDto {
   @ApiProperty({
     description: 'Line chart data with x and y coordinates',
     example: [
-      { x: '2020', y: 100 },
-      { x: '2021', y: 120 },
-      { x: '2022', y: 140 }
+      { time: '2020', value: 100 },
+      { time: '2021', value: 120 },
+      { time: '2022', value: 140 }
     ],
     type: 'array',
     items: {
       type: 'object',
       properties: {
-        x: { type: 'string', description: 'X-axis value' },
-        y: { type: 'number', description: 'Y-axis value' }
+        time: { type: 'string', description: 'X-axis value' },
+        value: { type: 'number', description: 'Y-axis value' }
       }
     }
   })
   @IsArray()
-  data: Array<{ x: string; y: number }>;
+  data: Array<{ time: string; value: number }>;
 }
 
 export class ScatterChartDto extends BaseChartDto {
@@ -172,68 +173,57 @@ export class ScatterChartDto extends BaseChartDto {
 export class HistogramChartDto extends BaseChartDto {
   @ApiProperty({
     description: 'Histogram data with bins and frequencies',
-    example: [
-      { bin: '0-10', frequency: 5 },
-      { bin: '10-20', frequency: 12 },
-      { bin: '20-30', frequency: 8 }
-    ],
+    example: [1.2, 3.4, 3.7, 4.3, 5.2, 5.8, 6.1],
     type: 'array',
     items: {
-      type: 'object',
-      properties: {
-        bin: { type: 'string', description: 'Bin range' },
-        frequency: { type: 'number', description: 'Frequency count' }
-      }
+      type: 'number',
+      description: 'Frequency count'
     }
   })
   @IsArray()
-  data: Array<{ bin: string; frequency: number }>;
+  data: Array<number>;
 }
 
 export class BoxplotChartDto extends BaseChartDto {
   @ApiProperty({
     description: 'Boxplot data with statistical values',
     example: [
-      { category: 'Group A', min: 10, q1: 15, median: 20, q3: 25, max: 30 },
-      { category: 'Group B', min: 12, q1: 18, median: 22, q3: 28, max: 35 }
+      { category: 'Group A', value: 20 },
+      { category: 'Group B', value: 22 }
     ],
     type: 'array',
     items: {
       type: 'object',
       properties: {
         category: { type: 'string', description: 'Category name' },
-        min: { type: 'number', description: 'Minimum value' },
-        q1: { type: 'number', description: 'First quartile' },
-        median: { type: 'number', description: 'Median value' },
-        q3: { type: 'number', description: 'Third quartile' },
-        max: { type: 'number', description: 'Maximum value' }
+        value: { type: 'number', description: 'Value for this category' }
       }
     }
   })
   @IsArray()
-  data: Array<{ category: string; min: number; q1: number; median: number; q3: number; max: number }>;
+  data: Array<{ category: string; value: number }>;
 }
 
 export class RadarChartDto extends BaseChartDto {
   @ApiProperty({
     description: 'Radar chart data with multiple dimensions',
     example: [
-      { dimension: 'Speed', value: 85 },
-      { dimension: 'Strength', value: 70 },
-      { dimension: 'Defense', value: 90 },
-      { dimension: 'Intelligence', value: 95 }
+      { name: 'Speed', value: 85 },
+      { name: 'Strength', value: 70 },
+      { name: 'Defense', value: 90 },
+      { name: 'Intelligence', value: 95 }
     ],
     type: 'array',
     items: {
       type: 'object',
       properties: {
-        dimension: { type: 'string', description: 'Dimension name' },
+        name: { type: 'string', description: 'Dimension name' },
         value: { type: 'number', description: 'Value for this dimension' }
       }
     }
   })
   @IsArray()
-  data: Array<{ dimension: string; value: number }>;
+  data: Array<{ name: string; value: number }>;
 }
 
 export class TreemapChartDto extends BaseChartDto {
@@ -408,10 +398,10 @@ export class FunnelChartDto extends BaseChartDto {
   @ApiProperty({
     description: 'Funnel chart data with stages and values',
     example: [
-      { stage: 'Awareness', value: 1000 },
-      { stage: 'Interest', value: 800 },
-      { stage: 'Consideration', value: 500 },
-      { stage: 'Purchase', value: 200 }
+      { category: 'Awareness', value: 1000 },
+      { category: 'Interest', value: 800 },
+      { category: 'Consideration', value: 500 },
+      { category: 'Purchase', value: 200 }
     ],
     type: 'array',
     items: {
@@ -427,44 +417,67 @@ export class FunnelChartDto extends BaseChartDto {
 }
 
 export class LiquidChartDto extends BaseChartDto {
-  @ApiProperty({
-    description: 'Liquid chart data with percentage value',
-    example: [
-      { percent: 0.65 }
-    ],
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: {
-        percent: { type: 'number', description: 'Percentage value (0-1)' }
-      }
-    }
+    @ApiProperty({
+    description: 'Percentage value (0-1)',
+    example: 0.73,
+    minimum: 0,
+    maximum: 1
   })
+  @IsNumber()
+  percent: number;
+
+  @ApiProperty({
+    description: 'Shape of the liquid chart',
+    enum: ['circle', 'rect', 'pin', 'triangle'],
+    example: 'circle'
+  })
+  @IsString()
+  @IsIn(['circle', 'rect', 'pin', 'triangle'])
+  shape: string;
+}
+export class MindMapNodeDto {
+  @ApiProperty({
+    description: 'Node name',
+    example: 'Planning'
+  })
+  @IsString()
+  name: string;
+
+  @ApiProperty({
+    description: 'Child nodes',
+    type: () => [MindMapNodeDto],
+    required: false
+  })
+  @IsOptional()
   @IsArray()
-  data: Array<{ percent: number }>;
+  children?: MindMapNodeDto[];
 }
 
 export class MindMapDto extends BaseChartDto {
   @ApiProperty({
-    description: 'Mind map data with hierarchical structure',
-    example: [
-      { id: '1', name: 'Central Topic', parent: null },
-      { id: '2', name: 'Branch 1', parent: '1' },
-      { id: '3', name: 'Branch 2', parent: '1' },
-      { id: '4', name: 'Sub-branch', parent: '2' }
-    ],
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: {
-        id: { type: 'string', description: 'Node ID' },
-        name: { type: 'string', description: 'Node name' },
-        parent: { type: 'string', description: 'Parent node ID', nullable: true }
-      }
+    description: 'Mind map root node with hierarchical children',
+    type: MindMapNodeDto,
+    example: {
+      name: 'Software Project',
+      children: [
+        { name: 'Planning' },
+        {
+          name: 'Development',
+          children: [
+            { name: 'Java' },
+            { name: 'JavaScript' },
+            { name: 'Python' }
+          ]
+        },
+        { name: 'Testing' },
+        { name: 'Deployment' },
+        { name: 'Requirements' }
+      ]
     }
   })
-  @IsArray()
-  data: Array<{ id: string; name: string; parent: string | null }>;
+  @ValidateNested()
+  @Type(() => MindMapNodeDto)
+  data: MindMapNodeDto[];
 }
 
 export class NetworkGraphDto extends BaseChartDto {
@@ -579,24 +592,26 @@ export class SankeyChartDto extends BaseChartDto {
 }
 
 export class VennChartDto extends BaseChartDto {
-  @ApiProperty({
-    description: 'Venn diagram data with sets and intersections',
+ @ApiProperty({
+    description: 'Venn diagram data with sets, label, and value',
     example: [
-      { sets: ['A'], size: 12 },
-      { sets: ['B'], size: 12 },
-      { sets: ['A', 'B'], size: 2 }
+      { label: 'A', value: 10, sets: ['A'] },
+      { label: 'B', value: 20, sets: ['B'] },
+      { label: 'C', value: 30, sets: ['C'] },
+      { label: 'AB', value: 5, sets: ['A', 'B'] }
     ],
     type: 'array',
     items: {
       type: 'object',
       properties: {
-        sets: { type: 'array', items: { type: 'string' }, description: 'Set names' },
-        size: { type: 'number', description: 'Size of intersection' }
+        label: { type: 'string', description: 'Label for the set or intersection' },
+        value: { type: 'number', description: 'Value of the set or intersection' },
+        sets: { type: 'array', items: { type: 'string' }, description: 'Set names' }
       }
     }
   })
   @IsArray()
-  data: Array<{ sets: string[]; size: number }>;
+  data: Array<{ label: string; value: number; sets: string[] }>;
 }
 
 export class ViolinChartDto extends BaseChartDto {

@@ -59,6 +59,8 @@ export class ChartGeneratorsController {
           width: 800,
           height: 600,
           theme: 'default',
+          axisXTitle: 'Time',
+          axisYTitle: 'Value',
           data: [
             { time: '2023-01', value: 12500 },
             { time: '2023-02', value: 15200 },
@@ -96,6 +98,8 @@ export class ChartGeneratorsController {
           width: 800,
           height: 600,
           theme: 'default',
+          axisXTitle: 'Product',
+          axisYTitle: 'Value',
           data: [
             { category: 'Product A', value: 32000 },
             { category: 'Product B', value: 45000 },
@@ -132,10 +136,12 @@ export class ChartGeneratorsController {
           width: 800,
           height: 600,
           theme: 'default',
+          axisXTitle: 'Product',
+          axisYTitle: 'Value',
           data: [
-            { category: 'Group A', min: 45, q1: 60, median: 75, q3: 85, max: 95 },
-            { category: 'Group B', min: 50, q1: 65, median: 78, q3: 88, max: 98 },
-            { category: 'Group C', min: 40, q1: 55, median: 70, q3: 80, max: 90 }
+            { category: 'Group A', value: 45, group: 'A' },
+            { category: 'Group B', value: 50, group: 'B' },
+            { category: 'Group C', value: 40, group: 'C' }
           ]
         }
       }
@@ -365,11 +371,11 @@ export class ChartGeneratorsController {
           height: 600,
           theme: 'default',
           data: [
-            { stage: 'Website Visitors', value: 10000 },
-            { stage: 'Product Views', value: 5000 },
-            { stage: 'Add to Cart', value: 1500 },
-            { stage: 'Checkout Started', value: 800 },
-            { stage: 'Purchase Completed', value: 500 }
+            { category: 'Website Visitors', value: 10000 },
+            { category: 'Product Views', value: 5000 },
+            { category: 'Add to Cart', value: 1500 },
+            { category: 'Checkout Started', value: 800 },
+            { category: 'Purchase Completed', value: 500 }
           ]
         }
       }
@@ -401,15 +407,9 @@ export class ChartGeneratorsController {
           width: 800,
           height: 600,
           theme: 'default',
-          data: [
-            { bin: '0-10', frequency: 120 },
-            { bin: '10-20', frequency: 180 },
-            { bin: '20-30', frequency: 250 },
-            { bin: '30-40', frequency: 300 },
-            { bin: '40-50', frequency: 280 },
-            { bin: '50-60', frequency: 200 },
-            { bin: '60+', frequency: 150 }
-          ]
+          data: [1.2, 3.4, 3.7, 4.3, 5.2, 5.8, 6.1, 6.5, 6.8, 7.1, 7.3, 7.7, 8.3, 8.6, 8.8, 9.1, 9.2, 9.4, 9.5,9.7, 10.5, 10.7, 10.8, 11, 11, 11.1, 11.2, 11.3, 11.4, 11.4, 11.7, 12, 12.9, 12.9, 13.3, 13.7,13.8, 13.9, 14, 14.2, 14.5, 15, 15.2, 15.6, 16, 16.3, 17.3, 17.5, 17.9, 18, 18, 20.6, 21, 23.4],
+          axisXTitle: 'Range',
+          axisYTitle: 'Count'
         }
       }
     }
@@ -441,13 +441,14 @@ export class ChartGeneratorsController {
           height: 600,
           theme: 'default',
           data: [
-            { x: '2023-01', y: 145.20 },
-            { x: '2023-02', y: 152.80 },
-            { x: '2023-03', y: 148.90 },
-            { x: '2023-04', y: 156.40 },
-            { x: '2023-05', y: 163.70 },
-            { x: '2023-06', y: 159.30 }
-          ]
+            { time: 2018, value: 91.9 },
+            { time: 2019, value: 99.1 },
+            { time: 2020, value: 101.6 },
+            { time: 2021, value: 114.4 },
+            { time: 2022, value: 121 }
+          ],
+          axisXTitle: 'Year',
+          axisYTitle: 'Growth'
         }
       }
     }
@@ -478,9 +479,8 @@ export class ChartGeneratorsController {
           width: 400,
           height: 400,
           theme: 'default',
-          data: [
-            { percent: 0.73 }
-          ]
+          percent: 0.73,
+          shape: 'circle' //["circle", "rect", "pin", "triangle"]
         }
       }
     }
@@ -511,19 +511,16 @@ export class ChartGeneratorsController {
           width: 1000,
           height: 800,
           theme: 'default',
-          data: [
-            { id: '1', name: 'Software Project', parent: null },
-            { id: '2', name: 'Planning', parent: '1' },
-            { id: '3', name: 'Development', parent: '1' },
-            { id: '4', name: 'Testing', parent: '1' },
-            { id: '5', name: 'Deployment', parent: '1' },
-            { id: '6', name: 'Requirements', parent: '2' },
-            { id: '7', name: 'Timeline', parent: '2' },
-            { id: '8', name: 'Frontend', parent: '3' },
-            { id: '9', name: 'Backend', parent: '3' },
-            { id: '10', name: 'Unit Tests', parent: '4' },
-            { id: '11', name: 'Integration Tests', parent: '4' }
-          ]
+          data: {
+            name: 'Software Project',
+            children: [
+              { name: 'Planning' },
+              { name: 'Development', children: [{ name: 'Java' }, { name: 'JavaScript' }, { name: 'Python' }] },
+              { name: 'Testing' },
+              { name: 'Deployment' },
+              { name: 'Requirements' },
+            ]
+          }
         }
       }
     }
@@ -635,13 +632,7 @@ export class ChartGeneratorsController {
           width: 1000,
           height: 600,
           theme: 'default',
-          data: [
-            { from: 'Shanghai', to: 'Los Angeles', value: 2500 },
-            { from: 'Shanghai', to: 'Hamburg', value: 1800 },
-            { from: 'Singapore', to: 'Rotterdam', value: 1200 },
-            { from: 'Hong Kong', to: 'Long Beach', value: 2000 },
-            { from: 'Busan', to: 'Seattle', value: 1500 }
-          ]
+          data: [{ "data": ["西安钟楼", "西安大唐不夜城", "西安大雁塔"] }, { "data": ["西安曲江池公园", "西安回民街"] }]
         }
       }
     }
@@ -747,12 +738,12 @@ export class ChartGeneratorsController {
           height: 600,
           theme: 'default',
           data: [
-            { dimension: 'Technical Skills', value: 85 },
-            { dimension: 'Communication', value: 78 },
-            { dimension: 'Leadership', value: 72 },
-            { dimension: 'Problem Solving', value: 90 },
-            { dimension: 'Creativity', value: 68 },
-            { dimension: 'Team Work', value: 82 }
+            { name: 'Technical Skills', value: 85 },
+            { name: 'Communication', value: 78 },
+            { name: 'Leadership', value: 72 },
+            { name: 'Problem Solving', value: 90 },
+            { name: 'Creativity', value: 68 },
+            { name: 'Team Work', value: 82 }
           ]
         }
       }
@@ -824,15 +815,21 @@ export class ChartGeneratorsController {
           height: 600,
           theme: 'default',
           data: [
-            { x: 165.5, y: 68.2 },
-            { x: 170.2, y: 72.5 },
-            { x: 158.8, y: 55.8 },
-            { x: 182.1, y: 85.3 },
-            { x: 175.6, y: 78.9 },
-            { x: 160.3, y: 58.7 },
-            { x: 168.9, y: 71.2 },
-            { x: 177.4, y: 80.1 }
-          ]
+            { x: 22, y: 3000 },
+            { x: 23, y: 3200 },
+            { x: 24, y: 3100 },
+            { x: 25, y: 3500 },
+            { x: 26, y: 3300 },
+            { x: 27, y: 3600 },
+            { x: 28, y: 4000 },
+            { x: 29, y: 3900 },
+            { x: 30, y: 4200 },
+            { x: 31, y: 4100 },
+            { x: 32, y: 4500 },
+            { x: 33, y: 4700 }
+          ],
+          axisXTitle: 'age',
+          axisYTitle: 'income'
         }
       }
     }
@@ -905,13 +902,10 @@ export class ChartGeneratorsController {
           height: 600,
           theme: 'default',
           data: [
-            { sets: ['Frontend'], size: 25 },
-            { sets: ['Backend'], size: 30 },
-            { sets: ['DevOps'], size: 15 },
-            { sets: ['Frontend', 'Backend'], size: 8 },
-            { sets: ['Frontend', 'DevOps'], size: 5 },
-            { sets: ['Backend', 'DevOps'], size: 10 },
-            { sets: ['Frontend', 'Backend', 'DevOps'], size: 3 }
+            { label: 'A', value: 10, sets: ['A'] }, 
+            { label: 'B', value: 20, sets: ['B'] }, 
+            { label: 'C', value: 30, sets: ['C'] }, 
+            { label: 'AB', value: 5, sets: ['A', 'B'] }
           ]
         }
       }
