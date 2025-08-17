@@ -731,7 +731,14 @@ export class ChartRenderService {
         };
         
         if (node.children && Array.isArray(node.children) && node.children.length > 0) {
-          result.children = node.children.map(processNode);
+          result.children = node.children.map((child: any) => {
+            // 如果child是字符串，转换为对象
+            if (typeof child === 'string') {
+              return { name: child };
+            }
+            // 如果child是对象，递归处理
+            return processNode(child);
+          });
         }
         
         return result;
@@ -749,9 +756,14 @@ export class ChartRenderService {
         name: rootItem?.name || rootItem?.label || rootItem?.title || 'Root Node',
         children: data.slice(1).map((item, index) => ({
           name: item.name || item.label || item.title || item.id || `Node ${index + 1}`,
-          children: item.children ? item.children.map((child: any) => ({
-            name: child.name || child.label || child.title || child.id || 'Child Node'
-          })) : []
+          children: item.children ? item.children.map((child: any) => {
+            if (typeof child === 'string') {
+              return { name: child };
+            }
+            return {
+              name: child.name || child.label || child.title || child.id || 'Child Node'
+            };
+          }) : []
         }))
       };
       

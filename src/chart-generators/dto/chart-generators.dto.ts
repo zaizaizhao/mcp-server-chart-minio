@@ -279,6 +279,7 @@ export class ColumnChartDto extends BaseChartDto {
       { category: 'Q3', value: 120 },
       { category: 'Q4', value: 180 }
     ],
+
     type: 'array',
     items: {
       type: 'object',
@@ -417,7 +418,16 @@ export class FunnelChartDto extends BaseChartDto {
 }
 
 export class LiquidChartDto extends BaseChartDto {
-    @ApiProperty({
+  // override BaseChartDto
+  @ApiProperty({
+    description: 'do not use this property',
+    type: 'array',
+    example:null
+  })
+  @IsArray()
+  data: null;
+
+  @ApiProperty({
     description: 'Percentage value (0-1)',
     example: 0.73,
     minimum: 0,
