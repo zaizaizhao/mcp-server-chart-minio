@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { 
   ApiTags, 
   ApiOperation, 
-  ApiCreatedResponse, ApiBadRequestResponse, ApiInternalServerErrorResponse, 
+  ApiOkResponse, ApiBadRequestResponse, ApiInternalServerErrorResponse, 
   ApiBody 
 } from '@nestjs/swagger';
 import { ChartRenderService } from '../chart/chart-render.service';
@@ -73,7 +73,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Area chart generated successfully', type: ChartResponseDto })
+  @ApiOkResponse({ description: 'Area chart generated successfully', type: ChartResponseDto })
   @ApiBadRequestResponse({ description: 'Invalid chart data or configuration provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
   async generateAreaChart(@Body() body: AreaChartDto): Promise<ChartResponseDto> {
@@ -110,7 +110,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Bar chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Bar chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid chart data or configuration provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -147,7 +147,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Box plot chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Box plot chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid statistical data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -185,7 +185,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Column chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Column chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid chart data or configuration provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -222,7 +222,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'District map generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'District map generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid geographic data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -258,7 +258,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Dual axes chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Dual axes chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid dual axes data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -298,7 +298,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Fishbone diagram generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Fishbone diagram generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid fishbone diagram data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -344,7 +344,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Flow diagram generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Flow diagram generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid flow diagram structure provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -381,7 +381,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Funnel chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Funnel chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid funnel data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -414,7 +414,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Histogram chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Histogram chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid histogram data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -453,7 +453,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Line chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Line chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid line chart data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -485,7 +485,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Liquid chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Liquid chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid liquid chart data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -525,7 +525,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Mind map generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Mind map generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid mind map structure provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -567,7 +567,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Network graph generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Network graph generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid network graph data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -606,7 +606,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Organization chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Organization chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid organization chart data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -637,7 +637,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Path map generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Path map generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid path map data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -674,7 +674,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Pie chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Pie chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid pie chart data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -711,7 +711,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Pin map generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Pin map generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid pin map coordinates provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -749,7 +749,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Radar chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Radar chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid radar chart data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -788,7 +788,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Sankey chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Sankey chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid Sankey flow data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -834,7 +834,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Scatter plot generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Scatter plot generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid scatter plot data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -875,7 +875,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Treemap chart generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Treemap chart generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid treemap hierarchical data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -911,7 +911,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Venn diagram generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Venn diagram generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid Venn diagram set data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -955,7 +955,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Violin plot generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Violin plot generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid violin plot distribution data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
@@ -1001,7 +1001,7 @@ export class ChartGeneratorsController {
       }
     }
   })
-  @ApiCreatedResponse({ description: 'Word cloud generated successfully', type: ChartResponseDto
+  @ApiOkResponse({ description: 'Word cloud generated successfully', type: ChartResponseDto
    })
   @ApiBadRequestResponse({ description: 'Invalid word cloud data provided' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error during chart generation' })
