@@ -44,23 +44,25 @@ HOST=0.0.0.0
 NODE_ENV=production
 PUBLIC_API_URL=http://$SERVER_IP:3000
 
-# MinIO Configuration
+# MinIO Connection for the app
 MINIO_ENDPOINT=minio
 MINIO_PORT=9000
 MINIO_USE_SSL=false
 MINIO_ACCESS_KEY=minioadmin
 MINIO_SECRET_KEY=minioadmin
+
+# Bucket settings
 MINIO_BUCKET_NAME=charts
+MINIO_AUTO_CREATE_BUCKET=false
 
 # MinIO External Access Configuration
 MINIO_EXTERNAL_ENDPOINT=$SERVER_IP
 MINIO_EXTERNAL_PORT=9000
 
-# Chart rendering settings
-CHART_WIDTH=800
-CHART_HEIGHT=600
-CHART_QUALITY=0.9
-LOG_LEVEL=info
+# MinIO server admin (used by Docker minio service)
+# Change these in production if needed
+MINIO_ROOT_USER=minioadmin
+MINIO_ROOT_PASSWORD=minioadmin
 EOF
 
 echo "✅ Created .env.production file"

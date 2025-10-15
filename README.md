@@ -50,49 +50,28 @@ docker-compose up -d
 
 #### 🌐 生产环境/虚拟机部署
 
-**重要配置参数说明：**
+**重要配置参数说明（基于 .env.production）：**
 
-1. **修改外部访问地址**（必须）：
-   
-   编辑 `docker-compose.yml` 文件，将以下参数改为您的服务器 IP：
-   ```yaml
-   environment:
-     - PUBLIC_API_URL=http://YOUR_SERVER_IP:3000
-     - MINIO_EXTERNAL_ENDPOINT=YOUR_SERVER_IP
+1. **修改外部访问地址与凭证**（必须）：
+   创建或编辑 `.env.production`，至少设置：
+   ```env
+   PUBLIC_API_URL=http://YOUR_SERVER_IP:3000
+   MINIO_EXTERNAL_ENDPOINT=YOUR_SERVER_IP
+   MINIO_EXTERNAL_PORT=9000
+   MINIO_ROOT_USER=your_admin_user
+   MINIO_ROOT_PASSWORD=your_secure_pwd
+   MINIO_ACCESS_KEY=your_admin_user
+   MINIO_SECRET_KEY=your_secure_pwd
+   MINIO_AUTO_CREATE_BUCKET=false
    ```
 
-2. **安全配置**（推荐）：
-   
-   修改默认密码：
-   ```yaml
-   minio:
-     environment:
-       MINIO_ROOT_USER: your_admin_user      # 修改管理员用户名
-       MINIO_ROOT_PASSWORD: your_secure_pwd  # 修改管理员密码（8位以上）
-   
-   app:
-     environment:
-       - MINIO_ACCESS_KEY=your_admin_user    # 与上面保持一致
-       - MINIO_SECRET_KEY=your_secure_pwd    # 与上面保持一致
-   ```
+2. **端口配置**（可选）：
+   在 `.env.production` 中调整：
+   - `PORT` 应用端口（默认 `3000`）
+   - `MINIO_EXTERNAL_PORT` MinIO 对外端口（默认 `9000`）
 
-3. **端口配置**（可选）：
-   
-   如需修改端口：
-   ```yaml
-   services:
-     minio:
-       ports:
-         - "9000:9000"  # MinIO API 端口
-         - "9001:9001"  # MinIO 控制台端口
-     app:
-       ports:
-         - "3000:3000"  # 应用端口
-   ```
-
-4. **数据持久化**：
-   
-   默认使用 Docker 卷存储，如需指定路径：
+3. **数据持久化**：
+   默认使用 Docker 卷存储，如需指定路径，在 Compose 中设置：
    ```yaml
    volumes:
      - /your/data/path:/data  # 替换为实际路径
@@ -102,18 +81,12 @@ docker-compose up -d
 
 **Linux/macOS：**
 ```bash
-# 自动配置生产环境
-export SERVER_IP=192.168.1.100  # 替换为您的服务器IP
-sed -i "s/localhost/$SERVER_IP/g" docker-compose.yml
-docker-compose up -d
+./deploy-production.sh
 ```
 
-**Windows PowerShell：**
+**Windows：**
 ```powershell
-# 自动配置生产环境
-$SERVER_IP = "192.168.1.100"  # 替换为您的服务器IP
-(Get-Content docker-compose.yml) -replace 'localhost', $SERVER_IP | Set-Content docker-compose.yml
-docker-compose up -d
+deploy-production.bat
 ```
 
 ### 方式二：NPM 开发环境
@@ -196,6 +169,9 @@ curl -X POST http://localhost:3000/api/chart-generators/pie \
 | `MINIO_ROOT_USER` | `minioadmin` | MinIO 管理员用户名 | 生产环境必须修改 |
 | `MINIO_ROOT_PASSWORD` | `minioadmin` | MinIO 管理员密码 | 生产环境必须修改（8位以上）|
 | `MINIO_BUCKET_NAME` | `charts` | 默认存储桶名称 | 可根据需要修改 |
+| `MINIO_ACCESS_KEY` | `minioadmin` | 应用访问 MinIO 的账户 | 生产环境必须修改 |
+| `MINIO_SECRET_KEY` | `minioadmin` | 应用访问 MinIO 的密码 | 生产环境必须修改 |
+| `MINIO_AUTO_CREATE_BUCKET` | `false` | 启动时自动创建桶 | 受限账户建议为 `false` |
 
 #### 应用服务配置
 | 参数 | 默认值 | 说明 | 修改建议 |
@@ -250,8 +226,9 @@ environment:
 ```env
 # 基础配置
 NODE_ENV=development
-PORT=3000
-HOST=localhost
+PORT=4000
+HOST=0.0.0.0
+PUBLIC_API_URL=http://localhost:4000
 
 # MinIO 连接配置
 MINIO_ENDPOINT=localhost
@@ -259,7 +236,10 @@ MINIO_PORT=9000
 MINIO_USE_SSL=false
 MINIO_ACCESS_KEY=minioadmin
 MINIO_SECRET_KEY=minioadmin
+
+# 存储桶与启动行为
 MINIO_BUCKET_NAME=charts
+MINIO_AUTO_CREATE_BUCKET=false
 
 # 外部访问配置（开发环境可选）
 MINIO_EXTERNAL_ENDPOINT=localhost
@@ -276,23 +256,20 @@ MINIO_EXTERNAL_PORT=9000
 **解决方案**：
 1. **检查配置**：
    ```bash
-   # 查看当前配置
-   grep -E "(PUBLIC_API_URL|MINIO_EXTERNAL)" docker-compose.yml
+   # 展开并查看最终生效的配置（基于 .env.production）
+   docker-compose --env-file .env.production config
    ```
 
 2. **修改配置**：
    ```bash
-   # 方法1：手动编辑 docker-compose.yml
-   nano docker-compose.yml
-   
-   # 方法2：使用脚本批量替换
-   sed -i 's/localhost/你的服务器IP/g' docker-compose.yml
+   # 推荐直接编辑 .env.production
+   nano .env.production
    ```
 
 3. **重启服务**：
    ```bash
-   docker-compose down
-   docker-compose up -d
+   docker-compose --env-file .env.production down
+   docker-compose --env-file .env.production up -d
    ```
 
 #### 端口冲突问题

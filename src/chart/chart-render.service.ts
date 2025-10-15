@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { render } from '@antv/gpt-vis-ssr';
 import { MinioService } from '../minio/minio.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,7 +25,8 @@ interface ChartTypeMapping {
 @Injectable()
 export class ChartRenderService {
   private readonly logger = new Logger(ChartRenderService.name);
-  private readonly BUCKET_NAME = 'charts';
+  private readonly BUCKET_NAME: string;
+  private readonly autoCreateBucket: boolean;
 
   // 图表类型映射配置 - 基于源码的正确实现
   private readonly chartTypeMappings: ChartTypeMapping = {
@@ -137,8 +139,15 @@ export class ChartRenderService {
     },
   };
 
-  constructor(private minioService: MinioService) {
-    this.initializeBucket();
+  constructor(private minioService: MinioService, private configService: ConfigService) {
+    this.BUCKET_NAME = this.configService.get<string>('MINIO_BUCKET_NAME', 'charts');
+    this.autoCreateBucket = this.configService.get<string>('MINIO_AUTO_CREATE_BUCKET', 'true') === 'true';
+
+    if (this.autoCreateBucket) {
+      this.initializeBucket();
+    } else {
+      this.logger.log(`Bucket auto-initialization disabled. Using bucket '${this.BUCKET_NAME}'.`);
+    }
   }
 
   private async initializeBucket() {

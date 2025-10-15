@@ -5,11 +5,11 @@ services:
     image: minio/minio:latest
     container_name: mcp-chart-minio
     ports:
-      - "9000:9000"
+      - "${MINIO_EXTERNAL_PORT:-9000}:${MINIO_PORT:-9000}"
       - "9001:9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
@@ -27,22 +27,22 @@ services:
       dockerfile: Dockerfile
     container_name: mcp-chart-app
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:${PORT:-3000}"
     environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - HOST=0.0.0.0
-      - PUBLIC_API_URL=http://localhost:3000
-      - MINIO_ENDPOINT=minio
-      - MINIO_PORT=9000
-      - MINIO_USE_SSL=false
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin
-      - MINIO_BUCKET_NAME=charts
-      # External MinIO access configuration
-      # Replace 'localhost' with your server's IP when deploying to production
-      - MINIO_EXTERNAL_ENDPOINT=localhost
-      - MINIO_EXTERNAL_PORT=9000
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${PORT:-3000}
+      - HOST=${HOST:-0.0.0.0}
+      - PUBLIC_API_URL=${PUBLIC_API_URL:-http://localhost:3000}
+      - MINIO_ENDPOINT=${MINIO_ENDPOINT:-minio}
+      - MINIO_PORT=${MINIO_PORT:-9000}
+      - MINIO_USE_SSL=${MINIO_USE_SSL:-false}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY:-minioadmin}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY:-minioadmin}
+      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME:-charts}
+      - MINIO_AUTO_CREATE_BUCKET=${MINIO_AUTO_CREATE_BUCKET:-true}
+      # External MinIO access configuration (host IP/domain for URL generation)
+      - MINIO_EXTERNAL_ENDPOINT=${MINIO_EXTERNAL_ENDPOINT:-localhost}
+      - MINIO_EXTERNAL_PORT=${MINIO_EXTERNAL_PORT:-9000}
     depends_on:
       minio:
         condition: service_healthy
