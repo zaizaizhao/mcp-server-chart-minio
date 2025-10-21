@@ -26,25 +26,24 @@
 
 ## 🚀 快速开始
 
-### 方式一：Docker Compose 部署（推荐）
+### 方式一：Docker Compose 完整部署（推荐）
 
-**适用于：生产环境、虚拟机部署、一键启动**
+**适用于：生产环境、虚拟机部署、一键启动完整服务**
 
-#### 🏠 本地部署
+#### 🏠 本地测试部署
 1. 克隆项目：
 ```bash
 git clone <repository-url>
 cd mcp-server-chart-minio
 ```
 
-2. 一键启动所有服务：
+2. 使用 Docker 配置文件启动所有服务：
 ```bash
-docker-compose up -d
+docker compose --env-file .env.docker up -d
 ```
 
 3. 访问服务：
    - 📊 **API 服务**: http://localhost:3000
-   - 💾 **MCP 本地部署url**: http://your_local_ip:3000/api/chart/render
    - 📖 **API 文档**: http://localhost:3000/api/docs  
    - 💾 **MinIO 控制台**: http://localhost:9001 (minioadmin/minioadmin)
 
@@ -89,7 +88,7 @@ docker-compose up -d
 deploy-production.bat
 ```
 
-### 方式二：NPM 开发环境
+### 方式二：本地开发模式
 
 **适用于：本地开发、调试、代码修改**
 
@@ -108,9 +107,11 @@ brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
 sudo apt-get install pkg-config libcairo2-dev libpango1.0-dev libpng-dev libjpeg-dev libgif-dev librsvg2-dev libpixman-1-dev
 ```
 
-3. 启动 MinIO 存储服务：
+3. 启动 MinIO 存储服务（仅 MinIO）：
 ```bash
 npm run docker:up:minio
+# 或
+docker compose -f docker-compose.minio.yml up -d
 ```
 
 4. 安装项目依赖：
@@ -118,10 +119,19 @@ npm run docker:up:minio
 npm install
 ```
 
-5. 启动开发服务器：
+5. 配置环境变量：
+   - 确保 `.env` 文件存在（用于本地开发）
+   - 默认配置连接到 `localhost:9000` 的 MinIO
+
+6. 启动开发服务器：
 ```bash
 npm run start:dev
 ```
+
+7. 访问服务：
+   - 📊 **API 服务**: http://localhost:4000
+   - 📖 **API 文档**: http://localhost:4000/api/docs
+   - 💾 **MinIO 控制台**: http://localhost:9001
 ## 📊 API 使用示例
 
 ### 生成折线图
@@ -153,6 +163,38 @@ curl -X POST http://localhost:3000/api/chart-generators/pie \
 ```
 
 ## 🔧 环境配置
+
+### 配置文件说明
+
+项目提供两个环境配置文件：
+
+| 文件 | 用途 | 使用场景 |
+|------|------|----------|
+| `.env` | 本地开发配置 | 本地运行 app + Docker 运行 MinIO |
+| `.env.docker` | Docker 完整部署配置 | 使用 docker compose 部署完整服务 |
+
+**关键区别：**
+```bash
+# .env (本地开发)
+MINIO_ENDPOINT=localhost        # 本地通过 localhost 访问 Docker 中的 MinIO
+PORT=4000                       # 开发端口
+NODE_ENV=development
+
+# .env.docker (Docker 部署)
+MINIO_ENDPOINT=minio           # 容器间通过服务名通信
+PORT=3000                      # 生产端口
+NODE_ENV=production
+```
+
+**使用方法：**
+```bash
+# 本地开发
+docker compose -f docker-compose.minio.yml up -d  # 只启动 MinIO
+npm run start:dev                                  # 本地运行 app
+
+# Docker 完整部署
+docker compose --env-file .env.docker up -d       # 启动所有服务
+```
 
 ### Docker Compose 参数详解
 
@@ -221,8 +263,9 @@ environment:
   - MINIO_ROOT_PASSWORD=SecurePass2024!
 ```
 
-### NPM 开发配置
-创建 `.env` 文件：
+### 本地开发配置示例
+
+`.env` 文件（已包含在项目中）：
 ```env
 # 基础配置
 NODE_ENV=development
@@ -230,18 +273,44 @@ PORT=4000
 HOST=0.0.0.0
 PUBLIC_API_URL=http://localhost:4000
 
-# MinIO 连接配置
-MINIO_ENDPOINT=localhost
+# MinIO 连接配置（本地开发模式）
+MINIO_ENDPOINT=localhost        # 连接本地 Docker 中的 MinIO
 MINIO_PORT=9000
 MINIO_USE_SSL=false
 MINIO_ACCESS_KEY=minioadmin
 MINIO_SECRET_KEY=minioadmin
 
-# 存储桶与启动行为
+# 存储桶配置
 MINIO_BUCKET_NAME=charts
 MINIO_AUTO_CREATE_BUCKET=false
 
-# 外部访问配置（开发环境可选）
+# 外部访问配置
+MINIO_EXTERNAL_ENDPOINT=localhost
+MINIO_EXTERNAL_PORT=9000
+```
+
+### Docker 部署配置示例
+
+`.env.docker` 文件（已包含在项目中）：
+```env
+# 基础配置
+NODE_ENV=production
+PORT=3000
+HOST=0.0.0.0
+PUBLIC_API_URL=http://localhost:3000
+
+# MinIO 连接配置（容器间通信）
+MINIO_ENDPOINT=minio           # 使用 Docker 服务名
+MINIO_PORT=9000
+MINIO_USE_SSL=false
+MINIO_ACCESS_KEY=minioadmin
+MINIO_SECRET_KEY=minioadmin
+
+# 存储桶配置
+MINIO_BUCKET_NAME=charts
+MINIO_AUTO_CREATE_BUCKET=true  # Docker 部署时自动创建
+
+# 外部访问配置（生产环境需修改为实际 IP）
 MINIO_EXTERNAL_ENDPOINT=localhost
 MINIO_EXTERNAL_PORT=9000
 ```
@@ -257,7 +326,7 @@ MINIO_EXTERNAL_PORT=9000
 1. **检查配置**：
    ```bash
    # 展开并查看最终生效的配置（基于 .env.production）
-   docker-compose --env-file .env.production config
+   docker compose --env-file .env.production config
    ```
 
 2. **修改配置**：
@@ -268,8 +337,8 @@ MINIO_EXTERNAL_PORT=9000
 
 3. **重启服务**：
    ```bash
-   docker-compose --env-file .env.production down
-   docker-compose --env-file .env.production up -d
+   docker compose --env-file .env.production down
+   docker compose --env-file .env.production up -d
    ```
 
 #### 端口冲突问题
@@ -311,9 +380,9 @@ docker network ls
 docker network inspect mcp-server-chart-minio_mcp-network
 
 # 重新创建网络
-docker-compose down
+docker compose down
 docker system prune -f
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Canvas 依赖问题
@@ -336,13 +405,13 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 1. **服务状态检查**：
    ```bash
    # 检查容器状态
-   docker-compose ps
+   docker compose ps
    
    # 查看 MinIO 日志
-   docker-compose logs minio
+   docker compose logs minio
    
    # 检查健康状态
-   docker-compose exec minio curl -f http://localhost:9000/minio/health/live
+   docker compose exec minio curl -f http://localhost:9000/minio/health/live
    ```
 
 2. **访问权限检查**：
@@ -371,10 +440,10 @@ docker system prune -a
 #### 镜像构建失败
 ```bash
 # 重新构建镜像
-docker-compose build --no-cache app
+docker compose build --no-cache app
 
 # 查看构建日志
-docker-compose build app --progress=plain
+docker compose build app --progress=plain
 ```
 
 ### 数据持久化问题
@@ -413,11 +482,11 @@ docker run --rm -v mcp-server-chart-minio_minio_data:/target -v $(pwd):/backup b
 **方法一：重启服务（推荐，最简单）**
 ```bash
 # 完全重启所有服务
-docker-compose down
-docker-compose up -d
+docker compose down
+docker compose up -d
 
 # 或者只重启应用服务
-docker-compose restart app
+docker compose restart app
 ```
 
 **方法二：手动设置存储桶策略**
