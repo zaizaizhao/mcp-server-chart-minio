@@ -31,109 +31,109 @@ export class ChartRenderService {
   // 图表类型映射配置 - 基于源码的正确实现
   private readonly chartTypeMappings: ChartTypeMapping = {
     // 基础图表 - 直接支持
-    'line': { 
+    'line': {
       type: 'line',
       dataPreprocessor: (data) => this.validateTimeSeriesData(data),
     },
-    'area': { 
+    'area': {
       type: 'area',
       dataPreprocessor: (data) => this.validateTimeSeriesData(data),
     },
-    'column': { 
+    'column': {
       type: 'column',
       dataPreprocessor: (data) => this.validateCategoricalData(data),
     },
-    'bar': { 
+    'bar': {
       type: 'bar',
       dataPreprocessor: (data) => this.validateCategoricalData(data),
     },
-    'pie': { 
+    'pie': {
       type: 'pie',
       dataPreprocessor: (data) => this.validateCategoricalData(data),
     },
-    'scatter': { 
+    'scatter': {
       type: 'scatter',
       dataPreprocessor: (data) => this.validateScatterData(data),
     },
-    
+
     // 高级图表 - 原生支持
-    'histogram': { 
+    'histogram': {
       type: 'histogram',
       dataPreprocessor: (data) => this.validateHistogramDataNative(data),
     },
-    'boxplot': { 
+    'boxplot': {
       type: 'boxplot',
       dataPreprocessor: (data) => this.validateBoxplotDataNative(data),
     },
-    'radar': { 
+    'radar': {
       type: 'radar',
       dataPreprocessor: (data) => this.validateRadarData(data),
     },
-    'funnel': { 
+    'funnel': {
       type: 'funnel',
       dataPreprocessor: (data) => this.validateFunnelData(data),
     },
-    'treemap': { 
+    'treemap': {
       type: 'treemap',
       dataPreprocessor: (data) => this.validateTreemapData(data),
     },
-    'sankey': { 
+    'sankey': {
       type: 'sankey',
       dataPreprocessor: (data) => this.validateSankeyData(data),
     },
-    'word-cloud': { 
+    'word-cloud': {
       type: 'word-cloud',
       dataPreprocessor: (data) => this.validateWordCloudDataNative(data),
     },
-    'dual-axes': { 
+    'dual-axes': {
       type: 'dual-axes',
       dataPreprocessor: (data) => this.validateDualAxesDataNative(data),
     },
-    'liquid': { 
+    'liquid': {
       type: 'liquid',
       dataPreprocessor: (data) => this.validateLiquidDataNative(data),
     },
-    'violin': { 
+    'violin': {
       type: 'violin',
       dataPreprocessor: (data) => this.validateViolinDataNative(data),
     },
-    'venn': { 
+    'venn': {
       type: 'venn',
       dataPreprocessor: (data) => this.validateVennDataNative(data),
     },
-    
+
     // 关系图表 - 原生支持，需要特殊数据格式
-    'mind-map': { 
+    'mind-map': {
       type: 'mind-map',
       dataPreprocessor: (data) => this.validateMindMapData(data),
     },
-    'organization-chart': { 
+    'organization-chart': {
       type: 'organization-chart',
       dataPreprocessor: (data) => this.validateOrgChartData(data),
     },
-    'flow-diagram': { 
+    'flow-diagram': {
       type: 'flow-diagram',
       dataPreprocessor: (data) => this.validateFlowChartData(data),
     },
-    'fishbone-diagram': { 
+    'fishbone-diagram': {
       type: 'fishbone-diagram',
       dataPreprocessor: (data) => this.validateFishboneDiagramData(data),
     },
-    'network-graph': { 
+    'network-graph': {
       type: 'network-graph',
       dataPreprocessor: (data) => this.validateNetworkGraphData(data),
     },
-    
+
     // 地理图表 - 暂时使用替代方案
-    'district-map': { 
+    'district-map': {
       type: 'bar',
       dataPreprocessor: (data) => this.validateDistrictMapData(data),
     },
-    'pin-map': { 
+    'pin-map': {
       type: 'scatter',
       dataPreprocessor: (data) => this.validateScatterData(data),
     },
-    'path-map': { 
+    'path-map': {
       type: 'line',
       dataPreprocessor: (data) => this.validateTimeSeriesData(data),
     },
@@ -171,7 +171,7 @@ export class ChartRenderService {
       }
 
       this.logger.log(`Rendering chart of type: ${options.type} -> ${chartConfig.type}`);
-      
+
       // 2. 数据预处理
       let processedData = options.data;
       if (chartConfig.dataPreprocessor) {
@@ -186,7 +186,7 @@ export class ChartRenderService {
 
       // 3. 构建渲染选项
       let renderOptions;
-      
+
       if (chartConfig.type === 'dual-axes') {
         // dual-axes 需要特殊的格式：categories和series作为顶级属性
         const dualAxesData = processedData as any;
@@ -210,7 +210,7 @@ export class ChartRenderService {
           theme: options.theme || 'default',
         };
       }
-      
+
       // 添加额外的属性到渲染选项中
       Object.keys(options).forEach(key => {
         // 跳过已经明确设置的属性
@@ -218,6 +218,31 @@ export class ChartRenderService {
           renderOptions[key] = options[key];
         }
       });
+
+      // 动态调整宽度以避免分页
+      // 假设每个数据项需要一定的像素宽度，如果总宽度超过默认宽度，则增加宽度
+      const PIXELS_PER_ITEM = 60; // 每个数据项预估宽度
+      let dataLength = 0;
+
+      if (Array.isArray(processedData)) {
+        dataLength = processedData.length;
+      } else if (processedData && typeof processedData === 'object') {
+        // 对于对象类型的数据，尝试获取其数组部分
+        const dataObj = processedData as any;
+        if (Array.isArray(dataObj.data)) {
+          dataLength = dataObj.data.length;
+        } else if (Array.isArray(dataObj.nodes)) {
+          dataLength = dataObj.nodes.length;
+        }
+      }
+
+      if (dataLength > 0) {
+        const calculatedWidth = Math.max(renderOptions.width, dataLength * PIXELS_PER_ITEM);
+        if (calculatedWidth > renderOptions.width) {
+          this.logger.log(`Adjusting chart width from ${renderOptions.width} to ${calculatedWidth} for ${dataLength} items`);
+          renderOptions.width = calculatedWidth;
+        }
+      }
 
       this.logger.debug(`Render options:`, JSON.stringify(renderOptions, null, 2));
 
@@ -227,17 +252,17 @@ export class ChartRenderService {
         vis = await render(renderOptions);
       } catch (renderError) {
         this.logger.error(`Render failed for ${options.type}:`, renderError.message);
-        
+
         // 尝试使用示例数据重新渲染
         const fallbackData = this.generateSampleData(options.type);
         let fallbackOptions;
-        
+
         if (chartConfig.type === 'dual-axes') {
           // dual-axes需要特殊处理
-          const processedFallbackData = chartConfig.dataPreprocessor ? 
-            chartConfig.dataPreprocessor(Array.isArray(fallbackData) ? fallbackData : [fallbackData]) : 
+          const processedFallbackData = chartConfig.dataPreprocessor ?
+            chartConfig.dataPreprocessor(Array.isArray(fallbackData) ? fallbackData : [fallbackData]) :
             fallbackData;
-          
+
           fallbackOptions = {
             type: chartConfig.type,
             categories: processedFallbackData.categories,
@@ -248,10 +273,10 @@ export class ChartRenderService {
           };
         } else {
           // 其他图表类型
-          const processedFallbackData = chartConfig.dataPreprocessor ? 
-            chartConfig.dataPreprocessor(Array.isArray(fallbackData) ? fallbackData : [fallbackData]) : 
+          const processedFallbackData = chartConfig.dataPreprocessor ?
+            chartConfig.dataPreprocessor(Array.isArray(fallbackData) ? fallbackData : [fallbackData]) :
             fallbackData;
-          
+
           fallbackOptions = {
             type: chartConfig.type,
             data: processedFallbackData,
@@ -260,7 +285,7 @@ export class ChartRenderService {
             title: options.title || `${options.type} Chart`,
           };
         }
-        
+
         this.logger.log(`Retrying with fallback data for ${options.type}`);
         this.logger.debug(`Fallback options:`, JSON.stringify(fallbackOptions, null, 2));
         vis = await render(fallbackOptions);
@@ -268,10 +293,10 @@ export class ChartRenderService {
 
       // 5. 获取图片Buffer
       const buffer = vis.toBuffer();
-      
+
       // 6. 生成唯一文件名
       const filename = `chart-${uuidv4()}.png`;
-      
+
       // 7. 上传到MinIO
       const client = this.minioService.getClient();
       await client.putObject(this.BUCKET_NAME, filename, buffer, buffer.length, {
@@ -289,9 +314,9 @@ export class ChartRenderService {
         this.logger.warn('Failed to generate public URL, falling back to presigned URL:', error.message);
         url = await this.minioService.getExternalPresignedUrl(this.BUCKET_NAME, filename, 24 * 60 * 60); // 24小时有效期
       }
-      
+
       this.logger.log(`Chart rendered and uploaded: ${filename}`);
-      
+
       return {
         url,
         filename,
@@ -452,17 +477,17 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       // 确保有时间字段
       if (!normalizedItem.time && !normalizedItem.date && !normalizedItem.x) {
         normalizedItem.time = `Point ${index + 1}`;
       }
-      
+
       // 确保有数值字段
       if (typeof normalizedItem.value !== 'number' && typeof normalizedItem.y !== 'number') {
         normalizedItem.value = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -477,17 +502,17 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       // 确保有分类字段
       if (!normalizedItem.category && !normalizedItem.name && !normalizedItem.label) {
         normalizedItem.category = `Category ${index + 1}`;
       }
-      
+
       // 确保有数值字段
       if (typeof normalizedItem.value !== 'number') {
         normalizedItem.value = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -502,7 +527,7 @@ export class ChartRenderService {
 
     return data.map((item) => {
       const normalizedItem = { ...item };
-      
+
       // 确保有x和y坐标
       if (typeof normalizedItem.x !== 'number') {
         normalizedItem.x = Math.random() * 100;
@@ -510,7 +535,7 @@ export class ChartRenderService {
       if (typeof normalizedItem.y !== 'number') {
         normalizedItem.y = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -533,7 +558,7 @@ export class ChartRenderService {
       } else {
         value = Math.random() * 100;
       }
-      
+
       return {
         category: `Bin ${index + 1}`,
         value: value
@@ -552,12 +577,12 @@ export class ChartRenderService {
     // 将箱线图数据转换为柱状图显示中位数
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       // 确保有分类字段
       if (!normalizedItem.category && !normalizedItem.name) {
         normalizedItem.category = `Category ${index + 1}`;
       }
-      
+
       // 使用中位数作为值，如果没有则计算平均值
       let value;
       if (typeof normalizedItem.median === 'number') {
@@ -567,7 +592,7 @@ export class ChartRenderService {
       } else {
         value = Math.random() * 100;
       }
-      
+
       return {
         category: normalizedItem.category,
         value: value
@@ -585,19 +610,19 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       if (!normalizedItem.name) {
         normalizedItem.name = `Item ${index + 1}`;
       }
-      
+
       if (!normalizedItem.category) {
         normalizedItem.category = `Category ${index + 1}`;
       }
-      
+
       if (typeof normalizedItem.value !== 'number') {
         normalizedItem.value = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -612,15 +637,15 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       if (!normalizedItem.stage && !normalizedItem.category) {
         normalizedItem.stage = `Stage ${index + 1}`;
       }
-      
+
       if (typeof normalizedItem.value !== 'number') {
         normalizedItem.value = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -635,15 +660,15 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       if (!normalizedItem.name && !normalizedItem.label) {
         normalizedItem.name = `Item ${index + 1}`;
       }
-      
+
       if (typeof normalizedItem.value !== 'number') {
         normalizedItem.value = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -659,17 +684,17 @@ export class ChartRenderService {
     // 将词云数据转换为条形图
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       let category = normalizedItem.text || normalizedItem.word || normalizedItem.name;
       if (!category) {
         category = `Word ${index + 1}`;
       }
-      
+
       let value = normalizedItem.value || normalizedItem.size || normalizedItem.weight;
       if (typeof value !== 'number') {
         value = Math.random() * 100;
       }
-      
+
       return {
         category: category,
         value: value
@@ -687,19 +712,19 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       if (!normalizedItem.time && !normalizedItem.date) {
         normalizedItem.time = `Point ${index + 1}`;
       }
-      
+
       if (typeof normalizedItem.value1 !== 'number') {
         normalizedItem.value1 = Math.random() * 100;
       }
-      
+
       if (typeof normalizedItem.value2 !== 'number') {
         normalizedItem.value2 = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -716,12 +741,12 @@ export class ChartRenderService {
     if (typeof item === 'number') {
       return [{ percent: Math.max(0, Math.min(1, item)) }];
     }
-    
+
     if (typeof item === 'object') {
       const percent = item.percent || item.value || 0.75;
       return [{ percent: Math.max(0, Math.min(1, percent)) }];
     }
-    
+
     return [{ percent: 0.75 }];
   }
 
@@ -730,7 +755,7 @@ export class ChartRenderService {
    */
   private validateMindMapData(data: any): any {
     this.logger.debug('validateMindMapData input:', JSON.stringify(data, null, 2));
-    
+
     // 如果传入的是对象结构（符合gpt-vis-ssr格式）
     if (data && typeof data === 'object' && !Array.isArray(data)) {
       // 确保每个节点都有name属性，递归处理children
@@ -738,7 +763,7 @@ export class ChartRenderService {
         const result: any = {
           name: node.name || node.label || node.title || node.id || 'Unnamed Node'
         };
-        
+
         if (node.children && Array.isArray(node.children) && node.children.length > 0) {
           result.children = node.children.map((child: any) => {
             // 如果child是字符串，转换为对象
@@ -749,15 +774,15 @@ export class ChartRenderService {
             return processNode(child);
           });
         }
-        
+
         return result;
       };
-      
+
       const processedData = processNode(data);
       this.logger.debug('validateMindMapData processed result:', JSON.stringify(processedData, null, 2));
       return processedData;
     }
-    
+
     // 如果是数组，转换为树结构
     if (Array.isArray(data) && data.length > 0) {
       const rootItem = data[0];
@@ -775,11 +800,11 @@ export class ChartRenderService {
           }) : []
         }))
       };
-      
+
       this.logger.debug('validateMindMapData array result:', JSON.stringify(result, null, 2));
       return result;
     }
-    
+
     // 默认结构
     const defaultResult = {
       name: 'Root Node',
@@ -789,7 +814,7 @@ export class ChartRenderService {
         { name: 'Child 3' }
       ]
     };
-    
+
     this.logger.debug('validateMindMapData default result:', JSON.stringify(defaultResult, null, 2));
     return defaultResult;
   }
@@ -799,12 +824,12 @@ export class ChartRenderService {
    */
   private validateOrgChartData(data: any): any {
     console.debug('validateOrgChartData input:', JSON.stringify(data, null, 2));
-    
+
     // 如果传入的是对象结构（符合gpt-vis-ssr格式）
     if (data && typeof data === 'object' && (data.name || data.label)) {
       return data;
     }
-    
+
     // 如果是数组，转换为树结构
     if (Array.isArray(data) && data.length > 0) {
       return {
@@ -817,7 +842,7 @@ export class ChartRenderService {
         }))
       };
     }
-    
+
     // 默认结构
     return {
       name: 'CEO',
@@ -834,7 +859,7 @@ export class ChartRenderService {
    */
   private validateFlowChartData(data: any): any {
     this.logger.debug('validateFlowChartData input:', JSON.stringify(data, null, 2));
-    
+
     // 如果传入的是包含nodes和edges的对象
     if (data && typeof data === 'object' && Array.isArray(data.nodes) && Array.isArray(data.edges)) {
       // 确保每个节点有name属性（flow-diagram源码需要）
@@ -842,7 +867,7 @@ export class ChartRenderService {
         name: node.name || node.label || node.id || 'Unnamed Node',
         ...node
       }));
-      
+
       // 确保边使用正确的source/target且有name属性
       const edges = data.edges.map((edge: any) => ({
         source: edge.source,
@@ -850,19 +875,19 @@ export class ChartRenderService {
         name: edge.name || edge.label || `${edge.source} → ${edge.target}`,
         ...edge
       }));
-      
+
       const result = { nodes, edges };
       this.logger.debug('validateFlowChartData result:', JSON.stringify(result, null, 2));
       return result;
     }
-    
+
     // 如果是数组，转换为nodes/edges结构
     if (Array.isArray(data) && data.length > 0) {
       const nodes = data.map((item, index) => ({
         name: item.name || item.label || item.id || `Step ${index + 1}`,
         type: item.type || (index === 0 ? 'start' : (index === data.length - 1 ? 'end' : 'process'))
       }));
-      
+
       const edges = [];
       for (let i = 0; i < nodes.length - 1; i++) {
         edges.push({
@@ -871,12 +896,12 @@ export class ChartRenderService {
           name: `${nodes[i].name} → ${nodes[i + 1].name}`
         });
       }
-      
+
       const result = { nodes, edges };
       this.logger.debug('validateFlowChartData result:', JSON.stringify(result, null, 2));
       return result;
     }
-    
+
     // 默认结构 - 确保返回正确的格式
     const defaultResult = {
       nodes: [
@@ -889,7 +914,7 @@ export class ChartRenderService {
         { source: 'Process', target: 'End', name: 'Process → End' }
       ]
     };
-    
+
     this.logger.debug('validateFlowChartData default result:', JSON.stringify(defaultResult, null, 2));
     return defaultResult;
   }
@@ -899,7 +924,7 @@ export class ChartRenderService {
    */
   private validateNetworkGraphData(data: any): any {
     this.logger.debug('validateNetworkGraphData input:', JSON.stringify(data, null, 2));
-    
+
     // 如果传入的是包含nodes和edges的对象
     if (data && typeof data === 'object' && Array.isArray(data.nodes) && Array.isArray(data.edges)) {
       // 确保每个节点有name属性（network-graph源码需要）
@@ -907,7 +932,7 @@ export class ChartRenderService {
         name: node.name || node.label || node.id || 'Unnamed Node',
         ...node
       }));
-      
+
       // 确保边使用正确的source/target且有name属性
       const edges = data.edges.map((edge: any) => ({
         source: edge.source,
@@ -915,19 +940,19 @@ export class ChartRenderService {
         name: edge.name || edge.label || `${edge.source} → ${edge.target}`,
         ...edge
       }));
-      
+
       const result = { nodes, edges };
       this.logger.debug('validateNetworkGraphData result:', JSON.stringify(result, null, 2));
       return result;
     }
-    
+
     // 如果是数组，转换为nodes/edges结构
     if (Array.isArray(data) && data.length > 0) {
       const nodes = data.map((item, index) => ({
         name: item.name || item.label || item.id || `Node ${index + 1}`,
         group: item.group || `group${index % 3 + 1}`
       }));
-      
+
       const edges = [];
       for (let i = 0; i < nodes.length - 1; i++) {
         edges.push({
@@ -937,12 +962,12 @@ export class ChartRenderService {
           weight: Math.floor(Math.random() * 5) + 1
         });
       }
-      
+
       const result = { nodes, edges };
       this.logger.debug('validateNetworkGraphData result:', JSON.stringify(result, null, 2));
       return result;
     }
-    
+
     // 默认结构 - 确保返回正确的格式
     const defaultResult = {
       nodes: [
@@ -955,7 +980,7 @@ export class ChartRenderService {
         { source: 'Node 2', target: 'Node 3', name: 'Connection 2', weight: 2 }
       ]
     };
-    
+
     this.logger.debug('validateNetworkGraphData default result:', JSON.stringify(defaultResult, null, 2));
     return defaultResult;
   }
@@ -965,12 +990,12 @@ export class ChartRenderService {
    */
   private validateFishboneDiagramData(data: any): any {
     console.debug('validateFishboneDiagramData input:', JSON.stringify(data, null, 2));
-    
+
     // 如果传入的是包含problem和categories的对象，转换为树结构
     if (data && typeof data === 'object' && (data.problem || data.categories)) {
       const problem = data.problem || 'Problem Statement';
       const categories = data.categories || [];
-      
+
       // 转换为fishbone-diagram需要的树形结构
       return {
         name: problem,
@@ -982,12 +1007,12 @@ export class ChartRenderService {
         }))
       };
     }
-    
+
     // 如果是已经是树结构，确保有name属性
     if (data && typeof data === 'object' && data.name) {
       return data;
     }
-    
+
     // 默认结构
     return {
       name: 'Problem Statement',
@@ -1022,7 +1047,7 @@ export class ChartRenderService {
    */
   private validateSankeyData(data: any): any {
     this.logger.debug('validateSankeyData input:', JSON.stringify(data, null, 2));
-    
+
     // 如果传入的是包含nodes和links的对象，转换为sankey需要的格式
     if (data && typeof data === 'object' && data.nodes && data.links) {
       // sankey源码期望的是 [{source, target, value}] 格式
@@ -1031,11 +1056,11 @@ export class ChartRenderService {
         target: link.target,
         value: link.value || Math.random() * 50
       }));
-      
+
       this.logger.debug('validateSankeyData result from nodes/links:', JSON.stringify(sankeyData, null, 2));
       return sankeyData;
     }
-    
+
     // 如果传入的就是links数组格式，直接验证和清理
     if (Array.isArray(data) && data.length > 0 && data[0].source && data[0].target) {
       const sankeyData = data.map(link => ({
@@ -1043,11 +1068,11 @@ export class ChartRenderService {
         target: link.target,
         value: typeof link.value === 'number' ? link.value : Math.random() * 50
       }));
-      
+
       this.logger.debug('validateSankeyData result from array:', JSON.stringify(sankeyData, null, 2));
       return sankeyData;
     }
-    
+
     // 默认桑基图数据
     const defaultResult = [
       { source: 'A', target: 'X', value: 40 },
@@ -1055,7 +1080,7 @@ export class ChartRenderService {
       { source: 'B', target: 'X', value: 20 },
       { source: 'B', target: 'Z', value: 25 }
     ];
-    
+
     this.logger.debug('validateSankeyData default result:', JSON.stringify(defaultResult, null, 2));
     return defaultResult;
   }
@@ -1088,12 +1113,12 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       // 确保有分类字段
       if (!normalizedItem.category && !normalizedItem.name) {
         normalizedItem.category = `Category ${index + 1}`;
       }
-      
+
       // 确保有统计数据
       const stats = ['min', 'q1', 'median', 'q3', 'max'];
       stats.forEach(stat => {
@@ -1101,7 +1126,7 @@ export class ChartRenderService {
           normalizedItem[stat] = Math.random() * 100;
         }
       });
-      
+
       return normalizedItem;
     });
   }
@@ -1116,15 +1141,15 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       if (!normalizedItem.text && !normalizedItem.word && !normalizedItem.name) {
         normalizedItem.text = `Word ${index + 1}`;
       }
-      
+
       if (typeof normalizedItem.value !== 'number' && typeof normalizedItem.size !== 'number') {
         normalizedItem.value = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -1134,7 +1159,7 @@ export class ChartRenderService {
    */
   private validateDualAxesDataNative(data: any[]): any {
     this.logger.debug(`validateDualAxesDataNative received data:`, JSON.stringify(data, null, 2));
-    
+
     if (!Array.isArray(data) || data.length === 0) {
       this.logger.error(`Invalid data for dual-axes: isArray=${Array.isArray(data)}, length=${data?.length}`);
       throw new Error('Data must be a non-empty array');
@@ -1142,10 +1167,10 @@ export class ChartRenderService {
 
     // dual-axes需要categories和series格式 - 根据source/gpt-vis-ssr/src/vis/dual-axes.ts
     // 返回包含categories和series的对象，这将被展开到render options中
-    const categories = data.map((item, index) => 
+    const categories = data.map((item, index) =>
       item.category || item.time || item.date || item.x || `Point ${index + 1}`
     );
-    
+
     const series = [
       {
         type: 'column',
@@ -1153,7 +1178,7 @@ export class ChartRenderService {
         axisYTitle: 'Sales'
       },
       {
-        type: 'line', 
+        type: 'line',
         data: data.map(item => item.profit || item.value2 || item.y2 || Math.random() * 50),
         axisYTitle: 'Profit'
       }
@@ -1161,7 +1186,7 @@ export class ChartRenderService {
 
     const result = { categories, series };
     this.logger.debug(`validateDualAxesDataNative result:`, JSON.stringify(result, null, 2));
-    
+
     return result;
   }
 
@@ -1177,12 +1202,12 @@ export class ChartRenderService {
     if (typeof item === 'number') {
       return { percent: Math.max(0, Math.min(1, item)) };
     }
-    
+
     if (typeof item === 'object') {
       const percent = item.percent || item.value || 0.75;
       return { percent: Math.max(0, Math.min(1, percent)) };
     }
-    
+
     return { percent: 0.75 };
   }
 
@@ -1197,11 +1222,11 @@ export class ChartRenderService {
     // 小提琴图需要大量数据点来生成密度曲线
     // 为每个类别生成多个数据点
     const result = [];
-    
+
     data.forEach((item, index) => {
       const category = item.category || `Category ${index + 1}`;
       const baseValue = typeof item.value === 'number' ? item.value : 75;
-      
+
       // 为每个类别生成20个数据点，模拟分布
       for (let i = 0; i < 20; i++) {
         result.push({
@@ -1211,7 +1236,7 @@ export class ChartRenderService {
         });
       }
     });
-    
+
     return result;
   }
 
@@ -1225,15 +1250,15 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       if (!normalizedItem.sets) {
         normalizedItem.sets = [`Set${index + 1}`];
       }
-      
+
       if (typeof normalizedItem.size !== 'number' && typeof normalizedItem.value !== 'number') {
         normalizedItem.size = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
@@ -1349,7 +1374,7 @@ export class ChartRenderService {
         name: `Connection ${i + 1}`
       });
     }
-    
+
     // 如果只有一个节点，创建自循环
     if (nodes.length === 1) {
       edges.push({
@@ -1372,17 +1397,17 @@ export class ChartRenderService {
 
     return data.map((item, index) => {
       const normalizedItem = { ...item };
-      
+
       if (!normalizedItem.name && !normalizedItem.region && !normalizedItem.category) {
         normalizedItem.category = `Region ${index + 1}`;
       } else {
         normalizedItem.category = normalizedItem.name || normalizedItem.region || normalizedItem.category;
       }
-      
+
       if (typeof normalizedItem.value !== 'number') {
         normalizedItem.value = Math.random() * 100;
       }
-      
+
       return normalizedItem;
     });
   }
