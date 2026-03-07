@@ -31,6 +31,7 @@ echo.
 REM Create production environment file
 (
 echo # Production Docker Deployment Configuration
+echo APP_ENV=production
 echo PORT=3000
 echo HOST=0.0.0.0
 echo NODE_ENV=production

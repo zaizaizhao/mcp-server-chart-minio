@@ -9,20 +9,16 @@ export enum ChartTheme {
 
 export class BaseChartDto {
   @ApiProperty({
-    description: 'Chart data array',
+    description: 'Chart data payload (type depends on chart kind)',
     example: [
       { time: '2020', value: 100 },
       { time: '2021', value: 120 },
       { time: '2022', value: 140 }
     ],
-    type: 'array',
-    items: {
-      type: 'object',
-      description: 'Data point object with key-value pairs'
-    }
+    required: false
   })
-  @IsArray()
-  data: any[];
+  @IsOptional()
+  data?: any;
 
   @ApiProperty({
     description: 'Chart title',
@@ -418,32 +414,36 @@ export class FunnelChartDto extends BaseChartDto {
 }
 
 export class LiquidChartDto extends BaseChartDto {
-  // override BaseChartDto
   @ApiProperty({
-    description: 'do not use this property',
+    description: 'Optional fallback data. Prefer using percent directly.',
     type: 'array',
-    example:null
+    required: false,
+    example: [{ percent: 0.73 }]
   })
+  @IsOptional()
   @IsArray()
-  data: null;
+  data?: Array<number | { percent?: number; value?: number }>;
 
   @ApiProperty({
     description: 'Percentage value (0-1)',
     example: 0.73,
     minimum: 0,
-    maximum: 1
+    maximum: 1,
+    required: false
   })
+  @IsOptional()
   @IsNumber()
-  percent: number;
+  percent?: number;
 
   @ApiProperty({
     description: 'Shape of the liquid chart',
     enum: ['circle', 'rect', 'pin', 'triangle'],
-    example: 'circle'
+    example: 'circle',
+    required: false
   })
-  @IsString()
+  @IsOptional()
   @IsIn(['circle', 'rect', 'pin', 'triangle'])
-  shape: string;
+  shape?: string;
 }
 export class MindMapNodeDto {
   @ApiProperty({
@@ -460,6 +460,8 @@ export class MindMapNodeDto {
   })
   @IsOptional()
   @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => MindMapNodeDto)
   children?: MindMapNodeDto[];
 }
 
@@ -487,7 +489,7 @@ export class MindMapDto extends BaseChartDto {
   })
   @ValidateNested()
   @Type(() => MindMapNodeDto)
-  data: MindMapNodeDto[];
+  data: MindMapNodeDto;
 }
 
 export class NetworkGraphDto extends BaseChartDto {

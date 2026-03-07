@@ -39,6 +39,7 @@ echo ""
 # Create production environment file
 cat > .env.production << EOF
 # Production Docker Deployment Configuration
+APP_ENV=production
 PORT=3000
 HOST=0.0.0.0
 NODE_ENV=production
@@ -74,9 +75,7 @@ read -p "Deploy now? (Y/n): " DEPLOY_NOW
 if [[ ! $DEPLOY_NOW =~ ^[Nn]$ ]]; then
     echo "🚀 Starting deployment..."
     
-    # Export environment variables and start services
-    export $(cat .env.production | xargs)
-    docker-compose up -d
+    docker-compose --env-file .env.production up -d
     
     echo ""
     echo "🎉 Deployment completed!"
